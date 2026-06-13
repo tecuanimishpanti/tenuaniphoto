@@ -900,7 +900,7 @@ footer {
     <li><a href="#acto2">Caída y Muerte</a></li>
     <li><a href="#acto3">El Nacimiento</a></li>
     <li><a href="#galeria">El Trabajo</a></li>
-    <li><a href="#universo">Universo</a></li>
+    <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
 
@@ -1102,6 +1102,20 @@ footer {
 <!-- ══════════════════════════════════
      GALERÍA — EL TRABAJO
 ══════════════════════════════════ -->
+
+<!-- LIGHTBOX -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:8500;background:rgba(3,2,2,.96);flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .4s;">
+  <button id="lb-close" style="position:absolute;top:2rem;right:2.5rem;background:none;border:none;color:rgba(154,149,144,.6);font-family:'IBM Plex Mono',monospace;font-size:.46rem;letter-spacing:.5em;text-transform:uppercase;cursor:pointer;transition:color .3s;z-index:10;" onmouseover="this.style.color='var(--ocre)'" onmouseout="this.style.color='rgba(154,149,144,.6)'">Cerrar ✕</button>
+  <button id="lb-prev" style="position:absolute;left:2rem;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(196,134,26,.35);font-size:2rem;cursor:pointer;padding:1rem;transition:color .3s;font-family:'Cormorant Garamond',serif;" onmouseover="this.style.color='var(--ocre)'" onmouseout="this.style.color='rgba(196,134,26,.35)'">‹</button>
+  <button id="lb-next" style="position:absolute;right:2rem;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(196,134,26,.35);font-size:2rem;cursor:pointer;padding:1rem;transition:color .3s;font-family:'Cormorant Garamond',serif;" onmouseover="this.style.color='var(--ocre)'" onmouseout="this.style.color='rgba(196,134,26,.35)'">›</button>
+  <img id="lb-img" src="" alt="" style="max-width:88vw;max-height:78vh;object-fit:contain;filter:brightness(.95);">
+  <div style="margin-top:1.8rem;text-align:center;">
+    <div id="lb-serie" style="font-family:'IBM Plex Mono',monospace;font-size:.42rem;letter-spacing:.5em;color:var(--ocre);text-transform:uppercase;margin-bottom:.5rem;"></div>
+    <div id="lb-caption" style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:300;color:var(--gris);margin-bottom:.4rem;"></div>
+    <div id="lb-counter" style="font-family:'IBM Plex Mono',monospace;font-size:.38rem;letter-spacing:.5em;color:rgba(196,134,26,.3);"></div>
+  </div>
+</div>
+
 <section id="galeria">
   <div class="galeria-header">
     <span class="sec-num reveal">El trabajo</span>
@@ -1109,58 +1123,35 @@ footer {
     <div class="sec-rule"></div>
   </div>
 
-  <div class="galeria-grid">
-    <!-- Para agregar fotos: reemplaza el div.foto-bg con <img class="foto-bg" src="img/TU-FOTO.jpg" alt="descripción"> -->
-    <div class="foto f1 reveal">
-      <div class="foto-bg"></div>
-      <div class="foto-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-        </svg>
-        <span>img/foto.jpg</span>
-      </div>
-      <div class="foto-label"><span class="foto-label-txt">Mercados · Territorio</span></div>
-    </div>
-
-    <div class="foto f2 reveal">
-      <div class="foto-bg"></div>
-      <div class="foto-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-        </svg>
-        <span>img/foto.jpg</span>
-      </div>
-      <div class="foto-label"><span class="foto-label-txt">Ritos · Altares</span></div>
-    </div>
-
-    <div class="foto f3 reveal">
-      <div class="foto-bg"></div>
-      <div class="foto-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-        </svg>
-        <span>img/foto.jpg</span>
-      </div>
-      <div class="foto-label"><span class="foto-label-txt">Ciudad</span></div>
-    </div>
-
-    <div class="foto f4 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Gente trabajando</span></div></div>
-    <div class="foto f5 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Foto de calle</span></div></div>
-    <div class="foto f6 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Lo sagrado</span></div></div>
-    <div class="foto f7 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Territorio</span></div></div>
-    <div class="foto f8 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Comunidades</span></div></div>
-    <div class="foto f9 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Lo profano</span></div></div>
-    <div class="foto f10 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Memoria</span></div></div>
-    <div class="foto f11 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Resistencia</span></div></div>
-    <div class="foto f12 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Biocultural</span></div></div>
+  <!-- SERIE TABS -->
+  <div id="serie-tabs" style="display:flex;gap:0;padding:0 3rem;margin-bottom:3rem;border-bottom:1px solid rgba(196,134,26,.08);overflow-x:auto;">
+    <button class="stab stab-on" data-serie="all">Todo</button>
+    <button class="stab" data-serie="mercados">Mercados</button>
+    <button class="stab" data-serie="sagrado">Lo Sagrado</button>
+    <button class="stab" data-serie="centro">Centro Histórico</button>
+    <button class="stab" data-serie="territorio">Territorio</button>
+    <button class="stab" data-serie="comunidades">Comunidades</button>
   </div>
+
+  <!-- INSTRUCCIÓN PARA SUBIR FOTOS (visible solo si no hay fotos) -->
+  <div id="galeria-empty" style="padding:5rem 3rem;text-align:center;display:none;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:.42rem;letter-spacing:.5em;color:rgba(196,134,26,.3);text-transform:uppercase;margin-bottom:1rem;">No hay imágenes en esta serie</div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gris);font-size:.95rem;">Para agregar fotos, sube los archivos a la carpeta <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em;color:var(--ocre);">img/</code> del repositorio y agrega las entradas en el array <code style="font-family:'IBM Plex Mono',monospace;font-size:.8em;color:var(--ocre);">FOTOS</code> del script.</p>
+  </div>
+
+  <!-- GRID MASONRY -->
+  <div id="galeria-grid" style="columns:3;column-gap:2px;padding:0 3rem 6rem;max-width:1600px;margin:0 auto;"></div>
+
 </section>
 
 <!-- ══════════════════════════════════
-     UNIVERSO TECUANI
+     CONTACTO
 ══════════════════════════════════ -->
-<section id="universo">
-  <svg class="universo-glifo" viewBox="0 0 200 200" fill="none">
+<section id="contacto" style="padding:10rem 5rem;background:linear-gradient(180deg,var(--negro),rgba(42,92,69,.04),var(--negro-barro));border-top:1px solid rgba(196,134,26,.06);text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(42,92,69,.06),transparent 65%);pointer-events:none;"></div>
+
+  <!-- Glifo -->
+  <svg style="width:64px;height:64px;margin:0 auto 4rem;opacity:.12;animation:spin 30s linear infinite;display:block;" viewBox="0 0 200 200" fill="none">
     <circle cx="100" cy="100" r="90" stroke="rgba(196,134,26,.5)" stroke-width=".8"/>
     <circle cx="100" cy="100" r="60" stroke="rgba(42,92,69,.4)" stroke-width=".8"/>
     <circle cx="100" cy="100" r="32" stroke="rgba(196,134,26,.55)" stroke-width=".8"/>
@@ -1173,49 +1164,34 @@ footer {
     <circle cx="100" cy="100" r="5" fill="rgba(196,134,26,.85)"/>
   </svg>
 
-  <span class="universo-sub reveal">El cosmos ordenado · Taltikpak</span>
-  <h2 class="universo-titulo reveal rd1">Universo Tecuani</h2>
-  <p class="universo-desc reveal rd2">El héroe regresó con sus herramientas. Aquí convergen el mito, la imagen y la palabra.</p>
+  <span class="reveal" style="font-family:'IBM Plex Mono',monospace;font-size:.44rem;letter-spacing:.45em;color:rgba(196,134,26,.38);text-transform:uppercase;display:block;margin-bottom:1rem;">El cosmos ordenado · Taltikpak</span>
+  <h2 class="reveal rd1" style="font-family:'Cinzel',serif;font-size:clamp(1.4rem,3vw,2.8rem);font-weight:400;letter-spacing:.14em;color:var(--hueso);margin-bottom:1rem;position:relative;">Universo Tecuani</h2>
+  <p class="reveal rd2" style="font-size:1rem;font-style:italic;font-weight:300;color:var(--gris);max-width:440px;margin:0 auto 5rem;line-height:1.95;position:relative;">El héroe regresó con sus herramientas. Proyectos editoriales, colaboraciones documentales, encargos biocuturales.</p>
 
-  <div class="universo-grid reveal rd3">
-    <a href="https://revistayopi-prog.github.io/yopi" target="_blank" class="u-item u-yopi">
-      <span class="u-icono">◈</span>
-      <span class="u-nombre">YOPI</span>
-      <span class="u-desc">Revista biocultural<br>Territorios · Memoria · Resistencia<br>Centroamérica</span>
+  <!-- Grid contacto: solo lo que existe -->
+  <div class="reveal rd3" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;max-width:600px;margin:0 auto 5rem;background:rgba(196,134,26,.06);">
+
+    <a href="https://substack.com/@tecuanimishpanti" target="_blank" style="padding:3.5rem 2.5rem;background:var(--negro-barro);text-decoration:none;position:relative;overflow:hidden;display:block;transition:background .4s;" onmouseover="this.style.background='rgba(196,134,26,.06)'" onmouseout="this.style.background='var(--negro-barro)'">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:1.1rem;margin-bottom:1.2rem;display:block;opacity:.5;">✦</span>
+      <span style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.18em;color:var(--hueso);font-weight:400;margin-bottom:.4rem;display:block;">SUBSTACK</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:.4rem;letter-spacing:.35em;color:var(--gris);text-transform:uppercase;line-height:1.8;display:block;">Escritura y ensayo<br>El mito como lente<br>Publicación semanal</span>
     </a>
 
-    <a href="https://substack.com" target="_blank" class="u-item u-substack">
-      <span class="u-icono">✦</span>
-      <span class="u-nombre">SUBSTACK</span>
-      <span class="u-desc">Escritura y ensayo<br>El mito como lente<br>Suscripción abierta</span>
+    <a href="mailto:<!-- PENDIENTE: agregar correo -->" style="padding:3.5rem 2.5rem;background:rgba(196,134,26,.06);border-top:1px solid rgba(196,134,26,.1);text-decoration:none;display:block;transition:background .4s;" onmouseover="this.style.background='rgba(196,134,26,.12)'" onmouseout="this.style.background='rgba(196,134,26,.06)'">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:1.1rem;margin-bottom:1.2rem;display:block;opacity:.5;">→</span>
+      <span style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.18em;color:var(--ocre);font-weight:400;margin-bottom:.4rem;display:block;">CONTACTO</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:.4rem;letter-spacing:.35em;color:var(--gris);text-transform:uppercase;line-height:1.8;display:block;">Proyectos editoriales<br>Colaboraciones documentales<br>Encargos fotográficos</span>
     </a>
 
-    <a href="https://youtube.com" target="_blank" class="u-item u-youtube">
-      <span class="u-icono">▶</span>
-      <span class="u-nombre">TECUANI NARRADOR</span>
-      <span class="u-desc">Canal de YouTube<br>Mitos · Terror folclórico<br>La voz del inframundo</span>
-      <span class="u-badge">En construcción</span>
-    </a>
-
-    <a href="#" class="u-item u-ig">
-      <span class="u-icono">◉</span>
-      <span class="u-nombre">INSTAGRAM</span>
-      <span class="u-desc">Archivo visual<br>Fotografía documental<br>Territorio y rito</span>
-    </a>
-
-    <div class="u-item u-artesano" style="cursor:default;">
-      <span class="u-icono">✧</span>
-      <span class="u-nombre">EL ARTESANO</span>
-      <span class="u-desc">Cartonería · Máscaras rituales<br>Encuadernación maestra<br>Dibujo</span>
-      <span class="u-badge">En formación</span>
-    </div>
-
-    <a href="mailto:contacto@tecuanimishpanti.com" class="u-item u-contacto">
-      <span class="u-icono">→</span>
-      <span class="u-nombre">CONTACTO</span>
-      <span class="u-desc">Proyectos editoriales<br>Colaboraciones bioculturales<br>Encargos documentales</span>
-    </a>
   </div>
+
+  <!-- Bio en inglés — para el editor internacional que llega al sitio -->
+  <div class="reveal" style="max-width:640px;margin:0 auto;padding:3rem;border:1px solid rgba(196,134,26,.08);position:relative;">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:.4rem;letter-spacing:.5em;color:rgba(196,134,26,.35);text-transform:uppercase;display:block;margin-bottom:1.5rem;">Press · Editorial</span>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:300;color:var(--gris);line-height:2;">Emerson Flores is a Salvadoran documentary photographer and multimedia journalist based in San Salvador. Working under the name <strong style="color:var(--hueso);font-style:normal;font-weight:400;">Tecuani Photo</strong>, he contributes to Getty Images and has published visual reportage in GatoEncerrado. His work spans urban economies, historical memory, indigenous communities, and the sacred geography of Central America. He approaches documentary practice through the frameworks of comparative religion and cultural anthropology — reading territory, markets, and ritual as living systems of memory.</p>
+    <span style="display:block;margin-top:1.5rem;font-family:'IBM Plex Mono',monospace;font-size:.38rem;letter-spacing:.4em;color:rgba(196,134,26,.3);text-transform:uppercase;">Getty Images · Tecuani Photo · El Salvador</span>
+  </div>
+
 </section>
 
 <footer>
