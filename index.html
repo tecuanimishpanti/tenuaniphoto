@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tecuani Mishpanti · Fotoperiodista · El Salvador</title>
-<meta name="description" content="Fotógrafo documental y fotoperiodista biocultural. Territorios, memoria y resistencia en El Salvador y Centroamérica.\">
+<meta name="description" content="Fotógrafo documental y fotoperiodista biocultural. Territorios, memoria y resistencia en El Salvador y Centroamérica.">
 <meta property="og:title" content="Tecuani Mishpanti · Fotoperiodista">
 <meta property="og:description" content="Fotógrafo documental. Territorios, memoria y resistencia.">
 <meta property="og:type" content="website">
@@ -17,1285 +17,1305 @@
 :root {
   --negro:       #070504;
   --negro-barro: #0D0A07;
-  --hueso:       #EDE9E2;
-  --hueso-tenue: rgba(237,233,226,0.6);
-  --oro-viejo:   #C4861A;
-  --jade-oscuro: #2A5C45;
-  --oxido:       #7A3B1E;
-  --transicion:  all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  --hueso:       #EDE8DF;
+  --jade:        #2A5C45;
+  --jade-claro:  #3D7A5E;
+  --tierra:      #7A3B1E;
+  --ocre:        #C4861A;
+  --rojo:        #8B1A1A;
+  --gris:        #9A9590;
+  --azul-oscuro: #1A2A3A;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  user-select: none;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 
 body {
-  background-color: var(--negro);
+  background: var(--negro-barro);
   color: var(--hueso);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  line-height: 1.6;
-  overflow: hidden; /* Controlado por el Portal de Entrada */
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+  cursor: none;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: var(--transicion);
+/* Grano de película sobre todo */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.028; pointer-events:none; z-index:9000;
 }
 
-/* ═══════════════════════════════════════
-   ELEMENTOS DE INTERFAZ & CURSOR CUSTOM
-═══════════════════════════════════════ */
-#cur {
-  width: 6px;
-  height: 6px;
-  background-color: var(--oro-viejo);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 10000;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s;
-}
-#cur-r {
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(196,134,26,0.3);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: left 0.1s ease-out, top 0.1s ease-out, transform 0.3s;
+/* ══ CURSOR CUSTOM ══ */
+#cur  { width:5px; height:5px; background:var(--ocre); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+#cur-r{ width:26px; height:26px; border:1px solid rgba(196,134,26,.3); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s,border-color .3s; }
+
+/* ══ INDICADOR PAÍS ══ */
+.country-tag {
+  position:fixed; bottom:2rem; left:2.5rem; z-index:400;
+  font-family:'IBM Plex Mono',monospace; font-size:.42rem;
+  letter-spacing:.4em; color:rgba(154,149,144,.3); text-transform:uppercase;
+  writing-mode:vertical-rl; transform:rotate(180deg);
 }
 
-/* ═══════════════════════════════════════
-   PORTAL DE ENTRADA (INTANGIBLE)
-═══════════════════════════════════════ */
+/* ══ INDICADOR SCROLL ══ */
+.scroll-pos {
+  position:fixed; right:2rem; top:50%; transform:translateY(-50%);
+  z-index:400; display:flex; flex-direction:column; gap:.6rem; align-items:center;
+}
+.sp-dot {
+  width:4px; height:4px; border-radius:50%;
+  background:rgba(196,134,26,.2); transition:background .4s, transform .4s;
+  cursor:pointer;
+}
+.sp-dot.active { background:var(--ocre); transform:scale(1.5); }
+
+/* ══════════════════════════════════════
+   PORTAL — ENTRADA
+══════════════════════════════════════ */
 #portal {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background-color: #050403;
-  z-index: 9000;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 1.2s cubic-bezier(0.76, 0, 0.24, 1), visibility 1.2s;
+  position:fixed; inset:0; background:#030202; z-index:8000;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition:opacity 2s ease, visibility 2s;
 }
-#portal.out {
-  opacity: 0;
-  visibility: hidden;
+#portal.out { opacity:0; visibility:hidden; pointer-events:none; }
+
+.portal-void { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 50%, #0a0608 0%, #030202 70%); }
+
+/* Espejo portal */
+.portal-mirror {
+  position:relative; z-index:10;
+  width:180px; height:180px; margin-bottom:3rem;
 }
-#portalVoid {
-  position: absolute;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  z-index: 1;
+.portal-mirror-frame {
+  position:absolute; inset:0; border-radius:50%;
+  border:1px solid rgba(196,134,26,.18);
+  box-shadow:0 0 50px rgba(196,134,26,.06), inset 0 0 30px rgba(0,0,0,.95);
+  animation:pmBreathe 5s ease-in-out infinite;
 }
-.portal-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
+@keyframes pmBreathe {
+  0%,100%{ box-shadow:0 0 40px rgba(196,134,26,.06),inset 0 0 30px rgba(0,0,0,.95); }
+  50%    { box-shadow:0 0 80px rgba(196,134,26,.14),inset 0 0 40px rgba(0,0,0,.98); }
 }
-.portal-title {
-  font-family: 'Cinzel', serif;
-  font-size: 2.2rem;
-  font-weight: 300;
-  letter-spacing: 0.3em;
-  color: var(--hueso);
-  margin-bottom: 0.5rem;
-  opacity: 0;
-  animation: fadeInPur 2s forwards 0.5s;
+.portal-mirror-surface {
+  position:absolute; inset:8px; border-radius:50%; overflow:hidden;
+  background:#030202;
+}
+.portal-jaguar-img {
+  width:100%; height:100%; object-fit:cover; object-position:50% 20%;
+  opacity:.3; animation:portalJagAppear 8s ease-in-out infinite;
+  filter:brightness(.65) saturate(.5); mix-blend-mode:luminosity;
+}
+@keyframes portalJagAppear {
+  0%{opacity:.3;} 25%{opacity:.55;} 50%{opacity:.7;} 75%{opacity:.45;} 100%{opacity:.3;}
+}
+
+/* Rayo en portal */
+.portal-lightning {
+  position:absolute; inset:0; border-radius:50%; pointer-events:none; z-index:5;
+}
+.portal-flash {
+  position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(ellipse at 48% 38%, rgba(200,215,255,.9), rgba(160,180,255,.35) 32%, transparent 62%);
+  opacity:0; animation:portalFlash 7s ease-in-out infinite;
+}
+@keyframes portalFlash {
+  0%,100%{opacity:0;}
+  20%{opacity:0;} 20.4%{opacity:.85;} 20.8%{opacity:.1;} 21.2%{opacity:.7;} 21.6%{opacity:0;}
+  50%{opacity:0;} 50.3%{opacity:.5;} 50.6%{opacity:0;}
+}
+
+.portal-name {
+  font-family:'Cinzel',serif; font-size:clamp(1.2rem,3vw,2rem);
+  letter-spacing:.5em; opacity:0; animation:fadeUp 2s ease .8s forwards;
+  position:relative; z-index:10;
 }
 .portal-sub {
-  font-size: 0.75rem;
-  color: var(--oro-viejo);
-  letter-spacing: 0.5em;
-  text-transform: uppercase;
-  margin-bottom: 4rem;
-  opacity: 0;
-  animation: fadeInPur 2s forwards 1.2s;
+  font-family:'IBM Plex Mono',monospace; font-size:.5rem; letter-spacing:.4em;
+  color:var(--ocre); text-transform:uppercase; margin-top:.7rem;
+  opacity:0; animation:fadeUp 2s ease 1.4s forwards; position:relative; z-index:10;
 }
 .portal-btn {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.4rem;
-  border: 1px solid rgba(237,233,226,0.15);
-  padding: 0.8rem 3rem;
-  cursor: pointer;
-  background: transparent;
-  color: var(--hueso);
-  transition: var(--transicion);
-  position: relative;
-  overflow: hidden;
-  opacity: 0;
-  animation: fadeInPur 2s forwards 1.8s;
+  margin-top:3.5rem; font-family:'IBM Plex Mono',monospace; font-size:.5rem;
+  letter-spacing:.5em; text-transform:uppercase;
+  border:1px solid rgba(196,134,26,.18); background:transparent; color:var(--gris);
+  padding:1rem 2.5rem; cursor:pointer;
+  opacity:0; animation:fadeUp 2s ease 2.4s forwards, ppulse 3s ease 3s infinite;
+  transition:border-color .4s, color .4s; position:relative; z-index:10;
 }
-.portal-btn:hover {
-  border-color: var(--oro-viejo);
-  color: var(--oro-viejo);
-  box-shadow: 0 0 15px rgba(196,134,26,0.1);
-}
+.portal-btn:hover { border-color:var(--ocre); color:var(--ocre); }
+@keyframes ppulse  { 0%,100%{opacity:.45} 50%{opacity:1} }
+@keyframes fadeUp  { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
 
-/* ═══════════════════════════════════════
-   ESTRUCTURA PRINCIPAL (MAIN CANVAS)
-═══════════════════════════════════════ */
-#main {
-  opacity: 0;
-  transition: opacity 1.5s ease-in;
-}
-#main.on {
-  opacity: 1;
-}
+/* ══════════════════════════════════════
+   MAIN WRAPPER
+══════════════════════════════════════ */
+#main { opacity:0; transition:opacity 1.5s ease; }
+#main.on { opacity:1; }
 
-/* MENÚ GLOBAL */
-header {
-  position: fixed;
-  top: 0; left: 0; width: 100%;
-  padding: 1.8rem 3.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
+/* ══ NAV ══ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.4rem 3.5rem;
 }
-.brand {
-  font-family: 'Cinzel', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+nav::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom, rgba(7,5,4,.9), transparent);
+  pointer-events:none;
 }
-.brand span {
-  font-weight: 300;
-  color: var(--oro-viejo);
+.nav-logo {
+  font-family:'Cinzel',serif; font-size:.75rem; letter-spacing:.3em;
+  color:var(--hueso); text-decoration:none; position:relative; z-index:1;
 }
-.nav-links {
-  display: flex;
-  gap: 2.5rem;
+.nav-links { display:flex; gap:2.2rem; list-style:none; position:relative; z-index:1; }
+.nav-links a {
+  font-family:'IBM Plex Mono',monospace; font-size:.44rem; letter-spacing:.35em;
+  color:var(--gris); text-decoration:none; text-transform:uppercase;
+  transition:color .3s; position:relative;
 }
-.nav-item {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  position: relative;
+.nav-links a::after {
+  content:''; position:absolute; bottom:-3px; left:0;
+  width:0; height:1px; background:var(--ocre); transition:width .4s;
 }
-.nav-item::after {
-  content: '';
-  position: absolute;
-  width: 0; height: 1px;
-  bottom: -4px; left: 0;
-  background-color: var(--oro-viejo);
-  transition: var(--transicion);
-}
-.nav-item:hover::after {
-  width: 100%;
-}
+.nav-links a:hover { color:var(--hueso); }
+.nav-links a:hover::after { width:100%; }
 
-/* INDICADORES LATERALES (PUNTOS) */
-#scrollDots {
-  position: fixed;
-  right: 3.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  z-index: 1000;
-}
-.dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background-color: rgba(237,233,226,0.2);
-  cursor: pointer;
-  transition: var(--transicion);
-}
-.dot.active {
-  background-color: var(--oro-viejo);
-  transform: scale(1.8);
-}
-
-/* DATOS FIJOS MARGINALES */
-.country-tag {
-  position: fixed;
-  bottom: 2.5rem; left: 3.5rem;
-  transform: rotate(-90deg) translateX(-100%);
-  transform-origin: left bottom;
-  font-size: 0.65rem;
-  color: var(--hueso-tenue);
-  z-index: 1000;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-}
-.scroll-pos {
-  position: fixed;
-  bottom: 2.5rem; right: 3.5rem;
-  font-size: 0.65rem;
-  font-family: 'Cinzel', serif;
-  color: var(--oro-viejo);
-  z-index: 1000;
-}
-
-/* SECCIONES EN BLOQUE CONTENIDO */
-section {
-  min-height: 100vh;
-  position: relative;
-  padding: 8rem 3.5rem 4rem 3.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* ═══════════════════════════════════════
-   HERO: EL ESPANTO (SKELETAL MAP)
-═══════════════════════════════════════ */
+/* ══════════════════════════════════════
+   HERO — EL ESPEJO PRINCIPAL
+══════════════════════════════════════ */
 #hero {
-  background: radial-gradient(circle at 70% 50%, #120e0a 0%, var(--negro) 70%);
-  overflow: hidden;
+  min-height:100vh; position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  overflow:hidden; padding:2rem; gap:3rem;
 }
-.hero-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-}
-.hero-subtitle {
-  font-size: 0.8rem;
-  color: var(--oro-viejo);
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  margin-bottom: 1rem;
-  display: block;
-}
-.hero-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  margin-bottom: 2.5rem;
-}
-.hero-title span {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-style: italic;
-  text-transform: none;
-  color: var(--hueso);
-  letter-spacing: 0rem;
-}
-.hero-meta {
-  display: flex;
-  gap: 4rem;
-  border-top: 1px solid rgba(237,233,226,0.1);
-  padding-top: 2rem;
-  max-width: 600px;
-}
-.meta-block h5 {
-  font-size: 0.7rem;
-  color: var(--hueso-tenue);
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.15em;
-}
-.meta-block p {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
-  font-style: italic;
+#hero::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(42,92,69,.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 68%, rgba(196,134,26,.04) 0%, transparent 50%);
 }
 
-/* ═══════════════════════════════════════
-   ACTO I: RESISTENCIA / EXISTENCIA
-═══════════════════════════════════════ */
+/* Línea vertical axis mundi — visual, no texto */
+.axis-mundi {
+  position:absolute; left:50%; top:0; bottom:0; width:1px;
+  transform:translateX(-50%);
+  background:linear-gradient(to bottom,
+    transparent 0%,
+    rgba(196,134,26,.08) 20%,
+    rgba(196,134,26,.18) 50%,
+    rgba(196,134,26,.08) 80%,
+    transparent 100%);
+  pointer-events:none;
+}
+
+/* ══ ESPEJO PRINCIPAL ══ */
+.mirror-wrap {
+  position:relative; z-index:10;
+  width:320px; height:320px; flex-shrink:0;
+}
+
+/* Anillos ambientales */
+.amb-ring {
+  position:absolute; border-radius:50%; border:1px solid;
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  pointer-events:none; animation:ambRing 8s ease-in-out infinite;
+}
+.amb-ring:nth-child(1){width:370px;height:370px;border-color:rgba(196,134,26,.1);animation-delay:0s;}
+.amb-ring:nth-child(2){width:440px;height:440px;border-color:rgba(42,92,69,.06);animation-delay:2s;}
+.amb-ring:nth-child(3){width:530px;height:530px;border-color:rgba(196,134,26,.04);animation-delay:4s;}
+@keyframes ambRing {
+  0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1);}
+  50%    {opacity:1; transform:translate(-50%,-50%) scale(1.012);}
+}
+
+.mirror-frame {
+  position:absolute; inset:0; border-radius:50%;
+  border:1px solid rgba(196,134,26,.38);
+  box-shadow:
+    0 0 0 5px rgba(196,134,26,.025),
+    0 0 0 12px rgba(196,134,26,.012),
+    0 0 90px rgba(196,134,26,.1),
+    inset 0 0 60px rgba(0,0,0,.95);
+  animation:mirrorBreathe 6s ease-in-out infinite;
+  z-index:2; pointer-events:none;
+}
+@keyframes mirrorBreathe {
+  0%,100%{ box-shadow:0 0 0 5px rgba(196,134,26,.025),0 0 0 12px rgba(196,134,26,.012),0 0 90px rgba(196,134,26,.1),inset 0 0 60px rgba(0,0,0,.95); }
+  50%    { box-shadow:0 0 0 5px rgba(196,134,26,.05),0 0 0 14px rgba(196,134,26,.022),0 0 140px rgba(196,134,26,.2),inset 0 0 70px rgba(0,0,0,.98); }
+}
+
+.mirror-surface {
+  position:absolute; inset:12px; border-radius:50%; overflow:hidden;
+  background:radial-gradient(ellipse at 45% 35%, #0e0a14, #030202 75%);
+  z-index:1;
+}
+
+/* Jaguar */
+.jaguar-layer {
+  position:absolute; inset:0; border-radius:50%; overflow:hidden;
+}
+.jaguar-img {
+  width:100%; height:100%; object-fit:cover; object-position:50% 15%;
+  opacity:.35; animation:jagAppear 12s ease-in-out infinite;
+  filter:brightness(.62) saturate(.5) contrast(1.1);
+}
+@keyframes jagAppear {
+  /* Siempre visible mínimo .35 — el rayo lo ilumina desde .35 hasta .95 */
+  0%   {opacity:.35; transform:scale(1.02);}
+  15%  {opacity:.55; transform:scale(1);}
+  35%  {opacity:.88; transform:scale(1.01);} /* peak — rayo detona aquí */
+  50%  {opacity:.78; transform:scale(1);}
+  70%  {opacity:.5;  transform:scale(.99);}
+  85%  {opacity:.38;}
+  100% {opacity:.35; transform:scale(1.02);}
+}
+
+/* ══ SISTEMA DE RAYO — TLALOC ══
+   El rayo detona en sincronía con el jaguar visible (peak ~40%)
+   Tres descargas: principal + réplica + destello final
+══════════════════════════════ */
+.thunder-layer {
+  position:absolute; inset:0; border-radius:50%;
+  pointer-events:none; z-index:6;
+}
+
+/* Flash de luz blanca-azulada que llena el espejo */
+.thunder-flash {
+  position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(ellipse at 48% 36%,
+    rgba(210,220,255,.98),
+    rgba(170,185,255,.45) 28%,
+    rgba(120,140,220,.15) 55%,
+    transparent 72%);
+  opacity:0;
+  animation:thunderFlash 11s ease-in-out infinite;
+}
+@keyframes thunderFlash {
+  /* Primera descarga — jaguar subiendo ~15% */
+  0%,100% {opacity:0;}
+  14%  {opacity:0;}
+  14.5%{opacity:1;}
+  15%  {opacity:.06;}
+  15.4%{opacity:.85;}
+  15.8%{opacity:0;}
+  /* Segunda descarga — jaguar en peak ~35% — la más dramática */
+  34%  {opacity:0;}
+  34.5%{opacity:.98;}
+  35%  {opacity:.08;}
+  35.4%{opacity:.9;}
+  35.8%{opacity:0;}
+  /* Destello suave — jaguar bajando ~70% */
+  69.5%{opacity:0;}
+  69.8%{opacity:.35;}
+  70.1%{opacity:0;}
+}
+
+/* Bolt SVG — rayo dibujado */
+.lightning-bolt {
+  position:absolute; inset:0; opacity:0;
+  animation:boltShow 11s ease-in-out infinite;
+}
+@keyframes boltShow {
+  0%,100%{opacity:0;}
+  14.5%{opacity:0;}
+  14.6%{opacity:1;}
+  15.5%{opacity:0;}
+  34.4%{opacity:0;}
+  34.5%{opacity:.95;}
+  35.5%{opacity:0;}
+}
+
+/* Resplandor exterior del espejo durante el rayo */
+.thunder-glow {
+  position:absolute; inset:-20px; border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%,
+    rgba(180,200,255,.15), transparent 65%);
+  opacity:0; pointer-events:none; z-index:7;
+  animation:thunderGlow 12s ease-in-out infinite;
+}
+@keyframes thunderGlow {
+  0%,100%{opacity:0;}
+  14.3%{opacity:0;} 14.6%{opacity:1;} 15.4%{opacity:0;}
+  34.2%{opacity:0;} 34.5%{opacity:1;} 35.4%{opacity:0;}
+}
+
+/* Humo */
+.smoke {position:absolute;inset:0;border-radius:50%;pointer-events:none;}
+.smoke-a{background:radial-gradient(ellipse at 55% 60%,rgba(28,18,8,.5),transparent 60%);animation:smokeA 9s ease-in-out infinite;}
+.smoke-b{background:radial-gradient(ellipse at 35% 40%,rgba(14,9,4,.4),transparent 55%);animation:smokeB 12s ease-in-out infinite;}
+@keyframes smokeA{0%,100%{transform:scale(1) translate(0,0);opacity:.7;}50%{transform:scale(1.1) translate(-5px,4px);opacity:1;}}
+@keyframes smokeB{0%,100%{transform:scale(1.06) translate(4px,-3px);opacity:.5;}50%{transform:scale(.95) translate(-4px,6px);opacity:.85;}}
+
+.mirror-glint {
+  position:absolute; width:26%; height:16%; top:16%; left:18%;
+  background:radial-gradient(ellipse,rgba(237,232,223,.05),transparent 70%);
+  border-radius:50%; animation:glint 8s ease-in-out infinite; pointer-events:none;
+}
+@keyframes glint{0%,100%{opacity:.25;}45%{opacity:.85;}70%{opacity:.15;}}
+
+.mirror-label {
+  position:absolute; bottom:-2rem; left:50%; transform:translateX(-50%);
+  font-family:'IBM Plex Mono',monospace; font-size:.38rem; letter-spacing:.5em;
+  color:rgba(196,134,26,.25); text-transform:uppercase; white-space:nowrap;
+}
+
+/* ══ HERO TEXT ══ */
+.hero-text { position:relative; z-index:10; text-align:center; max-width:680px; }
+
+.hero-eyebrow {
+  font-family:'IBM Plex Mono',monospace; font-size:.5rem; letter-spacing:.55em;
+  color:var(--ocre); text-transform:uppercase; margin-bottom:1.8rem;
+  opacity:0; animation:fadeUp 1s ease .3s forwards;
+}
+.hero-name {
+  font-family:'Cinzel',serif; font-size:clamp(2.4rem,7.5vw,6.5rem);
+  font-weight:900; letter-spacing:.06em; line-height:.92; color:var(--hueso);
+  text-shadow:0 0 60px rgba(196,134,26,.08);
+  opacity:0; animation:fadeUp 1.2s ease .6s forwards;
+}
+.hero-name span {
+  display:block; font-weight:400; font-size:.36em; letter-spacing:.4em;
+  color:var(--ocre); margin-top:.5rem; font-style:italic;
+  font-family:'Cormorant Garamond',serif;
+}
+
+/* Las tres palabras */
+.hero-tres {
+  margin-top:2rem; display:flex; gap:1.5rem; justify-content:center; align-items:center;
+  font-family:'IBM Plex Mono',monospace; font-size:.46rem; letter-spacing:.35em;
+  color:var(--gris); text-transform:uppercase;
+  opacity:0; animation:fadeUp 1.2s ease 1s forwards;
+}
+.hero-tres span { color:rgba(196,134,26,.35); }
+
+.hero-tagline {
+  margin-top:1.4rem; font-size:clamp(.88rem,1.4vw,1rem);
+  font-weight:300; font-style:italic; color:rgba(154,149,144,.65); line-height:1.9;
+  opacity:0; animation:fadeUp 1.2s ease 1.3s forwards;
+}
+
+.scroll-cue {
+  position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  opacity:0; animation:fadeUp 2s ease 3s forwards;
+}
+.scroll-cue-line {
+  width:1px; height:44px;
+  background:linear-gradient(to bottom,var(--ocre),transparent);
+  animation:scpulse 2.2s ease-in-out infinite;
+}
+@keyframes scpulse{0%,100%{opacity:.3;transform:scaleY(.8);}50%{opacity:.9;transform:scaleY(1);}}
+.scroll-cue-label {
+  font-family:'IBM Plex Mono',monospace; font-size:.38rem;
+  letter-spacing:.4em; color:rgba(196,134,26,.4); text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════
+   SECCIONES GENERALES
+══════════════════════════════════════ */
+.sec { padding:10rem 5rem; position:relative; }
+.sec-inner { max-width:1100px; margin:0 auto; }
+
+.sec-head {
+  display:flex; align-items:center; gap:1.8rem;
+  margin-bottom:6rem;
+}
+.sec-num {
+  font-family:'IBM Plex Mono',monospace; font-size:.44rem;
+  letter-spacing:.4em; color:var(--ocre); text-transform:uppercase;
+  white-space:nowrap;
+}
+.sec-title {
+  font-family:'Cinzel',serif; font-size:clamp(1rem,1.8vw,1.5rem);
+  letter-spacing:.2em; color:var(--hueso); font-weight:400;
+  white-space:nowrap;
+}
+.sec-rule {
+  flex:1; height:1px;
+  background:linear-gradient(to right, rgba(196,134,26,.2), transparent);
+}
+
+/* ══════════════════════════════════════
+   ACTO I — LA CAMINATA NOCTURNA
+══════════════════════════════════════ */
 #acto1 {
-  background-color: var(--negro-barro);
+  background:linear-gradient(180deg, var(--negro-barro), #050302);
+  border-top:1px solid rgba(196,134,26,.06);
 }
+
 .acto1-layout {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1px 1.2fr;
-  gap: 0 5rem;
-  align-items: center;
-}
-.acto-label {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  color: var(--oxido);
-  letter-spacing: 0.3em;
-  margin-bottom: 1.5rem;
-  display: block;
-}
-.acto1-txt-left h2, .acto1-txt-right h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.4rem;
-  font-weight: 300;
-  line-height: 1.2;
-  margin-bottom: 2rem;
-}
-.acto1-txt-left p {
-  color: var(--hueso-tenue);
-  margin-bottom: 1.5rem;
+  display:grid; grid-template-columns:1fr 1px 1fr; gap:0 5rem; align-items:start;
 }
 .acto1-divider {
-  background: linear-gradient(to bottom, rgba(122,59,30,0), rgba(122,59,30,0.5) 20%, rgba(122,59,30,0.5) 80%, rgba(122,59,30,0));
-  height: 60%;
+  background:linear-gradient(to bottom, transparent, rgba(196,134,26,.14), transparent);
+  align-self:stretch;
 }
-.acto1-txt-right {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
-  font-style: italic;
-  line-height: 1.7;
-  color: var(--hueso);
+.acto1-text { }
+.acto1-numero {
+  font-family:'IBM Plex Mono',monospace; font-size:.42rem; letter-spacing:.5em;
+  color:rgba(196,134,26,.35); text-transform:uppercase; margin-bottom:1.5rem;
+  display:block;
+}
+.acto1-titulo {
+  font-family:'Cinzel',serif; font-size:clamp(1.4rem,2.5vw,2.2rem);
+  font-weight:400; line-height:1.25; color:var(--hueso); margin-bottom:2.5rem;
+}
+.acto1-cuerpo p {
+  font-size:clamp(.95rem,1.4vw,1.08rem); font-weight:300; line-height:2.1;
+  color:var(--gris); margin-bottom:1.5rem;
+}
+.acto1-cuerpo p strong { color:var(--hueso); font-weight:400; }
+.acto1-cuerpo p em { color:var(--ocre); font-style:italic; }
+
+/* Elementos: agua, viento, fuego */
+.elementos-trio {
+  display:flex; flex-direction:column; gap:3rem;
+}
+.elemento-item {
+  display:flex; gap:1.5rem; align-items:flex-start;
+}
+.el-icono {
+  flex-shrink:0; width:44px; height:44px;
+  border:1px solid rgba(196,134,26,.15); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.el-body { }
+.el-nombre {
+  font-family:'Cinzel',serif; font-size:.88rem; letter-spacing:.15em;
+  color:var(--hueso); font-weight:400; margin-bottom:.3rem;
+}
+.el-nombre-sub {
+  font-family:'IBM Plex Mono',monospace; font-size:.4rem; letter-spacing:.4em;
+  color:var(--ocre); text-transform:uppercase; margin-bottom:.6rem; display:block;
+}
+.el-texto {
+  font-size:.9rem; font-weight:300; font-style:italic;
+  color:var(--gris); line-height:1.8;
 }
 
-/* ═══════════════════════════════════════
-   ACTO II: CRÓNICAS OCULTAS (EL TEXTO)
-═══════════════════════════════════════ */
+/* ══════════════════════════════════════
+   ACTO II — CAÍDA Y MUERTE
+══════════════════════════════════════ */
 #acto2 {
-  background-color: var(--negro);
-  align-items: center;
+  background:#030202;
+  border-top:1px solid rgba(196,134,26,.06);
+  position:relative; overflow:hidden;
 }
-.manifesto-box {
-  max-width: 800px;
-  text-align: center;
-  position: relative;
-}
-.manifesto-box::before {
-  content: '“';
-  font-family: 'Cinzel', serif;
-  font-size: 8rem;
-  color: rgba(196,134,26,0.06);
-  position: absolute;
-  top: -5rem; left: 50%;
-  transform: translateX(-50%);
-}
-.manifesto-title {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.4em;
-  color: var(--oro-viejo);
-  margin-bottom: 3rem;
-  text-transform: uppercase;
-}
-.manifesto-body {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.75rem;
-  line-height: 1.5;
-  font-weight: 300;
-  margin-bottom: 3rem;
-}
-.manifesto-body em {
-  color: var(--oro-viejo);
-}
-.manifesto-author {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: var(--hueso-tenue);
+#acto2::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 30%, rgba(139,26,26,.06), transparent 65%);
 }
 
-/* INTERMEDIO GRÁFICO (ESPEJO DE BARRO) */
+/* Espejo secundario — más pequeño, flotando */
 .espejo-acto2 {
-  width: 280px;
-  height: 280px;
-  border: 1px solid rgba(196,134,26,0.15);
-  margin: 3rem auto 0 auto;
-  position: relative;
-  transform: rotate(45deg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: var(--transicion);
+  width:260px; height:260px; position:relative; margin:0 auto 6rem;
+  flex-shrink:0;
 }
-.espejo-acto2:hover {
-  border-color: var(--oro-viejo);
-  transform: rotate(45deg) scale(1.05);
+.espejo-acto2-frame {
+  position:absolute; inset:0; border-radius:50%;
+  border:1px solid rgba(196,134,26,.3);
+  box-shadow:0 0 80px rgba(139,26,26,.12), inset 0 0 50px rgba(0,0,0,.97);
+  animation:mirrorBreathe 7s ease-in-out infinite;
 }
-.espejo-inner {
-  width: 85%; height: 85%;
-  border: 1px dashed rgba(42,92,69,0.3);
+.espejo-acto2-surface {
+  position:absolute; inset:10px; border-radius:50%; overflow:hidden;
+  background:radial-gradient(ellipse at 45% 35%, #100614, #020102 70%);
+}
+.espejo-acto2-jaguar {
+  width:100%; height:100%; object-fit:cover; object-position:50% 18%;
+  opacity:.3; animation:jagAppear2 14s ease-in-out infinite 1s;
+  filter:brightness(.5) saturate(.4) contrast(1.2) sepia(.2);
+}
+@keyframes jagAppear2 {
+  0%{opacity:.3;} 20%{opacity:.5;} 40%{opacity:.72;} 60%{opacity:.62;} 80%{opacity:.42;} 100%{opacity:.3;}
 }
 
-/* ═══════════════════════════════════════
-   ACTO III: TAXONOMÍA ARQUEOLÓGICA
-═══════════════════════════════════════ */
+/* Rayo en espejo acto II — más dramático */
+.espejo-acto2-flash {
+  position:absolute; inset:10px; border-radius:50%;
+  background:radial-gradient(ellipse at 50% 38%, rgba(220,225,255,.95), rgba(180,190,255,.4) 30%, transparent 65%);
+  opacity:0; animation:thunderFlash2 13s ease-in-out infinite 2s; z-index:5; pointer-events:none;
+}
+@keyframes thunderFlash2 {
+  0%,100%{opacity:0;}
+  30%{opacity:0;} 30.5%{opacity:1;} 31%{opacity:.05;} 31.5%{opacity:.9;} 32%{opacity:0;}
+  50%{opacity:0;} 50.4%{opacity:.7;} 50.8%{opacity:0;}
+  70%{opacity:0;} 70.3%{opacity:.4;} 70.6%{opacity:0;}
+}
+.espejo-acto2-glow {
+  position:absolute; inset:-24px; border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%, rgba(160,180,255,.12), transparent 60%);
+  opacity:0; pointer-events:none; z-index:6;
+  animation:thunderGlow2 13s ease-in-out infinite 2s;
+}
+@keyframes thunderGlow2 {
+  0%,100%{opacity:0;}
+  30.3%{opacity:0;} 30.6%{opacity:1;} 31.5%{opacity:0;}
+  50.2%{opacity:0;} 50.5%{opacity:.8;} 51%{opacity:0;}
+}
+
+.acto2-inner { max-width:680px; margin:0 auto; text-align:center; }
+.acto2-numero {
+  font-family:'IBM Plex Mono',monospace; font-size:.42rem; letter-spacing:.5em;
+  color:rgba(196,134,26,.35); text-transform:uppercase; margin-bottom:1.5rem;
+  display:block;
+}
+.acto2-titulo {
+  font-family:'Cinzel',serif; font-size:clamp(1.6rem,3vw,2.8rem);
+  font-weight:400; line-height:1.2; color:var(--hueso); margin-bottom:3.5rem;
+}
+
+/* Historia del jaguar — párrafos que aparecen */
+.historia-jaguar { text-align:left; }
+.hj-par {
+  font-size:clamp(.95rem,1.4vw,1.1rem); font-weight:300; line-height:2.15;
+  color:var(--gris); margin-bottom:2rem; position:relative;
+  padding-left:1.5rem;
+}
+.hj-par::before {
+  content:''; position:absolute; left:0; top:.7em;
+  width:4px; height:4px; border-radius:50%;
+  background:rgba(196,134,26,.3);
+}
+.hj-par strong { color:var(--hueso); font-weight:400; }
+.hj-par em { color:var(--ocre); font-style:italic; }
+
+/* Cierre del acto II */
+.acto2-cierre {
+  margin-top:5rem; padding-top:3rem;
+  border-top:1px solid rgba(196,134,26,.08);
+  text-align:center;
+}
+.acto2-cierre p {
+  font-size:clamp(1rem,1.8vw,1.35rem); font-style:italic;
+  font-weight:300; color:var(--hueso); line-height:1.8;
+}
+.acto2-cierre p em { color:var(--ocre); }
+
+/* ══════════════════════════════════════
+   ACTO III — EL NACIMIENTO
+══════════════════════════════════════ */
 #acto3 {
-  background-color: #0b0908;
+  background:linear-gradient(180deg, #030202, var(--negro-barro));
+  border-top:1px solid rgba(196,134,26,.06);
 }
-.acto3-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+.acto3-inner { max-width:780px; margin:0 auto; }
+.acto3-numero {
+  font-family:'IBM Plex Mono',monospace; font-size:.42rem; letter-spacing:.5em;
+  color:rgba(196,134,26,.35); text-transform:uppercase; margin-bottom:1.5rem;
+  display:block;
 }
-.grid-taxonomia {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 3rem;
-  margin-top: 4rem;
+.acto3-titulo {
+  font-family:'Cinzel',serif; font-size:clamp(1.4rem,2.5vw,2.2rem);
+  font-weight:400; line-height:1.25; color:var(--hueso); margin-bottom:1rem;
 }
-.tax-card {
-  border-left: 2px solid var(--jade-oscuro);
-  padding: 0.5rem 0 1.5rem 1.8rem;
-  transition: var(--transicion);
+.acto3-sub {
+  font-family:'IBM Plex Mono',monospace; font-size:.46rem; letter-spacing:.4em;
+  color:var(--ocre); text-transform:uppercase; margin-bottom:3rem; display:block;
 }
-.tax-card:hover {
-  border-left-color: var(--oro-viejo);
-  background: linear-gradient(to right, rgba(196,134,26,0.02), transparent);
+.acto3-texto {
+  font-size:clamp(.95rem,1.4vw,1.08rem); font-weight:300; line-height:2.1;
+  color:var(--gris); margin-bottom:1.5rem;
 }
-.tax-num {
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  color: var(--oro-viejo);
-  display: block;
-  margin-bottom: 0.8rem;
-}
-.tax-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
-}
-.tax-desc {
-  color: var(--hueso-tenue);
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
+.acto3-texto strong { color:var(--hueso); font-weight:400; }
+.acto3-texto em { color:var(--ocre); font-style:italic; }
 
-/* ═══════════════════════════════════════
-   GALERÍA CRÍTICA (NARRATIVA VISUAL)
-═══════════════════════════════════════ */
+/* ══════════════════════════════════════
+   GALERÍA — EL TRABAJO
+══════════════════════════════════════ */
 #galeria {
-  background-color: var(--negro);
+  background:var(--negro);
+  border-top:1px solid rgba(196,134,26,.06);
+  padding:8rem 0;
 }
 .galeria-header {
-  max-width: 1200px;
-  margin: 0 auto 3rem auto;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-.filter-tabs {
-  display: flex;
-  gap: 1.5rem;
-  border-bottom: 1px solid rgba(237,233,226,0.1);
-  padding-bottom: 0.5rem;
-}
-.tab {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--hueso-tenue);
-  cursor: pointer;
-  position: relative;
-  transition: var(--transicion);
-}
-.tab.active, .tab:hover {
-  color: var(--oro-viejo);
-}
-.tab.active::after {
-  content: '';
-  position: absolute;
-  width: 100%; height: 2px;
-  bottom: -0.6rem; left: 0;
-  background-color: var(--oro-viejo);
+  max-width:1100px; margin:0 auto 5rem; padding:0 4rem;
+  display:flex; align-items:center; gap:1.8rem;
 }
 
-/* GRID ASIMÉTRICO DINÁMICO */
-.g-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4rem 2.5rem;
-}
-.g-item {
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  opacity: 1;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
-}
-.g-item.hide {
-  opacity: 0;
-  transform: translateY(30px);
-  pointer-events: none;
-  position: absolute;
-  width: 0; height: 0; overflow: hidden; margin: 0; padding: 0;
+/* Grid masonry-like */
+.galeria-grid {
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-auto-rows:80px;
+  gap:3px;
+  padding:0 3px;
 }
 
-/* Distribución Asimétrica Estilo Portfolio Premium */
-.g-item:nth-child(3n+1) { grid-column: span 5; }
-.g-item:nth-child(3n+2) { grid-column: span 7; margin-top: 3rem; }
-.g-item:nth-child(3n+3) { grid-column: span 12; max-width: 85%; margin: 0 auto; }
+.foto {
+  overflow:hidden; position:relative; cursor:pointer;
+  background:var(--negro-barro);
+}
+.foto::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(7,5,4,.7), transparent 50%);
+  opacity:0; transition:opacity .5s;
+}
+.foto:hover::after { opacity:1; }
+.foto-bg {
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .9s cubic-bezier(.4,0,.2,1);
+  filter:brightness(.88) saturate(.85);
+}
+.foto:hover .foto-bg { transform:scale(1.06); filter:brightness(.95) saturate(1); }
 
-.g-img-wrap {
-  width: 100%;
-  position: relative;
-  background-color: #12100e;
-  overflow: hidden;
-  transition: var(--transicion);
-}
-/* Ratios simulados en CSS puro para prescindir de imágenes rotas en el código base */
-.g-item.ratio-h .g-img-wrap { aspect-ratio: 16 / 10; }
-.g-item.ratio-v .g-img-wrap { aspect-ratio: 3 / 4; max-width: 90%; }
+/* Layout asimétrico */
+.f1  { grid-column:1/6;  grid-row:1/5; }
+.f2  { grid-column:6/10; grid-row:1/4; }
+.f3  { grid-column:10/13;grid-row:1/3; }
+.f4  { grid-column:10/13;grid-row:3/5; }
+.f5  { grid-column:6/9;  grid-row:4/7; }
+.f6  { grid-column:9/13; grid-row:5/8; }
+.f7  { grid-column:1/5;  grid-row:5/9; }
+.f8  { grid-column:5/9;  grid-row:7/10;}
+.f9  { grid-column:9/13; grid-row:8/11;}
+.f10 { grid-column:1/5;  grid-row:9/12;}
+.f11 { grid-column:5/9;  grid-row:10/13;}
+.f12 { grid-column:9/13; grid-row:11/14;}
 
-.g-img-placeholder {
-  width: 100%; height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #16120f 0%, #0d0a08 100%);
-  border: 1px solid rgba(237,233,226,0.05);
-  position: relative;
-  transition: var(--transicion);
-}
-.g-img-placeholder::before {
-  content: '';
-  position: absolute;
-  width: 100%; height: 100%;
-  background: radial-gradient(circle at center, transparent 30%, rgba(7,5,4,0.8) 100%);
-  z-index: 1;
-}
-.g-img-placeholder span {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  color: rgba(196,134,26,0.4);
-  letter-spacing: 0.3em;
-  z-index: 2;
-  text-transform: uppercase;
-}
-.g-item:hover .g-img-placeholder {
-  transform: scale(1.03);
-  border-color: rgba(196,134,26,0.3);
-}
+/* Placeholders de color para fotos */
+.f1  .foto-bg { background:linear-gradient(145deg,#0A1810,#2A5C45); }
+.f2  .foto-bg { background:linear-gradient(200deg,#180805,#7A3B1E); }
+.f3  .foto-bg { background:linear-gradient(145deg,#0D0404,#8B1A1A); }
+.f4  .foto-bg { background:linear-gradient(160deg,#180F03,#C4861A); }
+.f5  .foto-bg { background:linear-gradient(145deg,#050810,#2C4A6B); }
+.f6  .foto-bg { background:linear-gradient(200deg,#0A1810,#3D7A5E); }
+.f7  .foto-bg { background:linear-gradient(160deg,#0D0404,#7A3B1E); }
+.f8  .foto-bg { background:linear-gradient(145deg,#080508,#2A5C45); }
+.f9  .foto-bg { background:linear-gradient(200deg,#180F03,#8B1A1A); }
+.f10 .foto-bg { background:linear-gradient(145deg,#050810,#1A2A3A); }
+.f11 .foto-bg { background:linear-gradient(160deg,#0A1810,#C4861A); }
+.f12 .foto-bg { background:linear-gradient(200deg,#0D0404,#2A5C45); }
 
-.g-meta {
-  margin-top: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
+/* Etiqueta sobre cada foto */
+.foto-label {
+  position:absolute; bottom:0; left:0; right:0; z-index:3;
+  padding:1rem 1.2rem;
+  opacity:0; transform:translateY(6px);
+  transition:opacity .4s, transform .4s;
 }
-.g-info h4 {
-  font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.3rem;
-}
-.g-info p {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.95rem;
-  font-style: italic;
-  color: var(--oro-viejo);
-}
-.g-tag {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  border: 1px solid rgba(237,233,226,0.2);
-  padding: 0.2rem 0.6rem;
-  color: var(--hueso-tenue);
+.foto:hover .foto-label { opacity:1; transform:translateY(0); }
+.foto-label-txt {
+  font-family:'IBM Plex Mono',monospace; font-size:.38rem;
+  letter-spacing:.35em; color:rgba(237,232,223,.55); text-transform:uppercase;
 }
 
-/* ═══════════════════════════════════════
-   UNIVERSO CONTEMPORÁNEO (CONTACTO)
-═══════════════════════════════════════ */
+/* Instrucción placeholder */
+.foto-placeholder {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:.8rem; opacity:.18;
+}
+.foto-placeholder svg { width:28px; height:28px; }
+.foto-placeholder span {
+  font-family:'IBM Plex Mono',monospace; font-size:.38rem;
+  letter-spacing:.3em; color:var(--gris); text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════
+   UNIVERSO TECUANI — REDES Y PROYECTOS
+══════════════════════════════════════ */
 #universo {
-  background-color: var(--negro-barro);
-  padding-bottom: 8rem;
+  padding:10rem 5rem;
+  background:linear-gradient(180deg, var(--negro), rgba(42,92,69,.04), var(--negro-barro));
+  border-top:1px solid rgba(196,134,26,.06);
+  text-align:center; position:relative; overflow:hidden;
 }
+#universo::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 40%, rgba(42,92,69,.06), transparent 65%);
+}
+
+.universo-glifo {
+  width:72px; height:72px; margin:0 auto 4rem; opacity:.12;
+  animation:spin 30s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.universo-titulo {
+  font-family:'Cinzel',serif; font-size:clamp(1.4rem,3vw,2.8rem);
+  font-weight:400; letter-spacing:.14em; color:var(--hueso);
+  margin-bottom:1rem; position:relative;
+}
+.universo-sub {
+  font-family:'IBM Plex Mono',monospace; font-size:.44rem;
+  letter-spacing:.45em; color:rgba(196,134,26,.38);
+  text-transform:uppercase; margin-bottom:1.2rem; display:block;
+}
+.universo-desc {
+  font-size:1rem; font-style:italic; font-weight:300;
+  color:var(--gris); max-width:440px; margin:0 auto 5rem; line-height:1.95;
+  position:relative;
+}
+
+/* Grid de proyectos */
 .universo-grid {
-  max-width: 1200px;
-  margin: 4rem auto 0 auto;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 5rem;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; max-width:900px; margin:0 auto 5rem;
+  background:rgba(196,134,26,.06); position:relative;
 }
-.uni-left p {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  line-height: 1.5;
-  color: var(--hueso);
-  margin-bottom: 3rem;
+.u-item {
+  padding:3.5rem 2.5rem; background:var(--negro-barro);
+  text-decoration:none; position:relative; overflow:hidden;
+  transition:background .4s; display:block;
 }
-.uni-details {
-  display: flex;
-  flex-direction: column;
-  gap: 1.8rem;
+.u-item::before {
+  content:''; position:absolute; inset:0; opacity:0;
+  transition:opacity .5s;
 }
-.uni-line h6 {
-  font-size: 0.65rem;
-  color: var(--hueso-tenue);
-  text-transform: uppercase;
-  margin-bottom: 0.4rem;
-  letter-spacing: 0.2em;
+.u-yopi::before    { background:radial-gradient(ellipse at 50% 50%, rgba(42,92,69,.12), transparent); }
+.u-substack::before{ background:radial-gradient(ellipse at 50% 50%, rgba(196,134,26,.08), transparent); }
+.u-youtube::before { background:radial-gradient(ellipse at 50% 50%, rgba(139,26,26,.1), transparent); }
+.u-ig::before      { background:radial-gradient(ellipse at 50% 50%, rgba(122,59,30,.1), transparent); }
+.u-artesano::before{ background:radial-gradient(ellipse at 50% 50%, rgba(44,74,107,.1), transparent); }
+.u-contacto::before{ background:radial-gradient(ellipse at 50% 50%, rgba(196,134,26,.12), transparent); }
+.u-item:hover::before { opacity:1; }
+
+.u-icono {
+  font-family:'IBM Plex Mono',monospace; font-size:1.1rem;
+  margin-bottom:1.2rem; display:block; opacity:.5;
 }
-.uni-line a, .uni-line p {
-  font-size: 1.1rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
+.u-nombre {
+  font-family:'Cinzel',serif; font-size:.88rem; letter-spacing:.18em;
+  color:var(--hueso); font-weight:400; margin-bottom:.4rem; display:block;
 }
-.uni-line a:hover {
-  color: var(--oro-viejo);
-  padding-left: 5px;
+.u-desc {
+  font-family:'IBM Plex Mono',monospace; font-size:.4rem; letter-spacing:.35em;
+  color:var(--gris); text-transform:uppercase; line-height:1.8;
+}
+.u-badge {
+  display:inline-block; margin-top:.8rem;
+  font-family:'IBM Plex Mono',monospace; font-size:.36rem; letter-spacing:.3em;
+  color:rgba(196,134,26,.4); text-transform:uppercase;
+  border:1px solid rgba(196,134,26,.15); padding:.2rem .5rem;
 }
 
-/* FORMULARIO DE REQUERIMIENTOS */
-.uni-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+/* Botón contacto destacado */
+.u-contacto {
+  background:rgba(196,134,26,.06);
+  border-top:1px solid rgba(196,134,26,.1);
 }
-.form-group {
-  position: relative;
-}
-.uni-form input, .uni-form textarea {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(237,233,226,0.15);
-  padding: 0.8rem 0;
-  color: var(--hueso);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.8rem;
-  outline: none;
-  transition: var(--transicion);
-}
-.uni-form textarea {
-  height: 100px;
-  resize: none;
-}
-.uni-form input:focus, .uni-form textarea:focus {
-  border-bottom-color: var(--oro-viejo);
-}
-.form-group label {
-  position: absolute;
-  left: 0; top: 0.8rem;
-  font-size: 0.75rem;
-  color: var(--hueso-tenue);
-  pointer-events: none;
-  transition: var(--transicion);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.uni-form input:focus ~ label, .uni-form input:not(:placeholder-shown) ~ label,
-.uni-form textarea:focus ~ label, .uni-form textarea:not(:placeholder-shown) ~ label {
-  top: -1rem;
-  font-size: 0.6rem;
-  color: var(--oro-viejo);
-}
-.form-btn {
-  align-self: flex-start;
-  background: transparent;
-  border: 1px solid var(--oro-viejo);
-  padding: 0.8rem 2.5rem;
-  color: var(--oro-viejo);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  cursor: pointer;
-  transition: var(--transicion);
-}
-.form-btn:hover {
-  background-color: var(--oro-viejo);
-  color: var(--negro);
-}
+.u-contacto:hover { background:rgba(196,134,26,.12); }
+.u-contacto .u-nombre { color:var(--ocre); }
 
-/* FOOTER MARGINAL */
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
 footer {
-  max-width: 1200px;
-  margin: 6rem auto 0 auto;
-  width: 100%;
-  border-top: 1px solid rgba(237,233,226,0.05);
-  padding-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  color: rgba(237,233,226,0.3);
-  font-size: 0.65rem;
+  padding:2rem 4rem; border-top:1px solid rgba(196,134,26,.06);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.ft-name {
+  font-family:'Cinzel',serif; font-size:.58rem;
+  letter-spacing:.28em; color:var(--gris);
+}
+.ft-nahuatl {
+  font-family:'Cormorant Garamond',serif; font-size:.78rem;
+  font-style:italic; color:rgba(196,134,26,.3);
+}
+.ft-year {
+  font-family:'IBM Plex Mono',monospace; font-size:.44rem;
+  letter-spacing:.28em; color:rgba(154,149,144,.25);
 }
 
-/* ═══════════════════════════════════════
-   LIGHTBOX OVERLAY (TEATRO CRÍTICO)
-═══════════════════════════════════════ */
-#lightbox {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background-color: rgba(7,5,4,0.98);
-  z-index: 20000;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.lb-close-area {
-  position: absolute;
-  width: 100%; height: 100%;
-  top: 0; left: 0; z-index: 1;
-}
-#lb-close {
-  position: fixed;
-  top: 2rem; right: 3.5rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-  z-index: 10;
-  transition: var(--transicion);
-}
-#lb-close:hover { color: var(--oro-viejo); transform: rotate(90deg); }
-.lb-wrapper {
-  position: relative;
-  z-index: 2;
-  max-width: 85%;
-  max-height: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.lb-canvas {
-  width: 650px;
-  aspect-ratio: 16 / 10;
-  background: #110e0c;
-  border: 1px solid rgba(196,134,26,0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-}
-.lb-canvas::before {
-  content: 'ARCHIVO VISUAL';
-  font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  color: rgba(237,233,226,0.1);
-  letter-spacing: 0.4em;
-}
-.lb-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
-  color: var(--hueso-tenue);
-  cursor: pointer;
-  width: 50px; height: 50px;
-  display: flex; justify-content: center; align-items: center;
-  transition: var(--transicion);
-  z-index: 5;
-}
-.lb-nav-btn:hover { color: var(--oro-viejo); }
-#lb-prev { left: -5rem; }
-#lb-next { right: -5rem; }
-.lb-caption-box {
-  margin-top: 2rem;
-  text-align: center;
-  max-width: 600px;
-}
-#lb-title {
-  font-family: 'Cinzel', serif;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.1em;
-}
-#lb-desc {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  font-style: italic;
-  color: var(--hueso-tenue);
-  line-height: 1.4;
-}
+/* ══════════════════════════════════════
+   REVEAL ANIMATIONS
+══════════════════════════════════════ */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
+.rd1 { transition-delay:.1s; }
+.rd2 { transition-delay:.22s; }
+.rd3 { transition-delay:.36s; }
 
-/* KEYFRAMES PURAS AUXILIARES */
-@keyframes fadeInPur {
-  to { opacity: 1; }
-}
-
-/* RESPONSIVE & BREAKPOINTS */
-@media(max-width:768px) {
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:900px) {
+  nav { padding:1.2rem 1.8rem; }
   .nav-links { display:none; }
-  .acto1-layout { grid-template-columns:1fr; gap:3rem 0; }
-  .acto1-divider { height:1px; width:100%; }
+  .sec { padding:6rem 1.8rem; }
+  .mirror-wrap { width:240px; height:240px; }
+  .acto1-layout { grid-template-columns:1fr; gap:4rem; }
+  .acto1-divider { display:none; }
+  .galeria-grid { grid-template-columns:repeat(2,1fr); grid-auto-rows:200px; }
+  .f1,.f2,.f3,.f4,.f5,.f6,.f7,.f8,.f9,.f10,.f11,.f12 {
+    grid-column:auto; grid-row:auto;
+  }
   .universo-grid { grid-template-columns:1fr; }
   footer { flex-direction:column; gap:.8rem; text-align:center; }
-  .country-tag, .scroll-pos { display:none; }
+  .country-tag,.scroll-pos { display:none; }
   #universo { padding:7rem 2rem; }
   .espejo-acto2 { width:200px; height:200px; }
-  body { cursor: default; }
-  #cur, #cur-r { display: none; }
 }
 </style>
-
-<script>
-// Inicialización de partículas atmosféricas en el fondo del Portal al cargar
-document.addEventListener("DOMContentLoaded", () => {
-  const v = document.getElementById('portalVoid');
-  if (v) {
-    for (let i = 0; i < 35; i++) {
-      const p = document.createElement('div');
-      const sz = Math.random() * 3 + 1;
-      p.style.cssText = `
-        position:absolute; background:rgba(196,134,26,${Math.random()*.3}); 
-        border-radius:50%; width:${sz}px; height:${sz}px; 
-        left:${Math.random()*100}%; top:${Math.random()*100}%; 
-        animation:voidFloat ${Math.random()*18+12}s linear ${Math.random()*12}s infinite;
-      `;
-      v.appendChild(p);
-    }
-  }
-  
-  // Agregar estilos de animación dinámicos para las partículas flotantes
-  const s = document.createElement('style');
-  s.textContent = '@keyframes voidFloat{0%{opacity:0;transform:translateY(0);}40%{opacity:.12;}100%{opacity:0;transform:translateY(-100vh);}}';
-  document.head.appendChild(s);
-});
-
-function enter(){
-  document.getElementById('portal').classList.add('out');
-  document.getElementById('main').classList.add('on');
-  setTimeout(() => { document.body.style.overflow = 'auto'; }, 900);
-}
-
-// CONFIGURACIÓN DINÁMICA DE SECCIONES (Sincronizada con los contenedores HTML)
-const sections = ['hero', 'acto1', 'acto2', 'acto3', 'galeria', 'universo'];
-
-// Lógica de Scroll e Iluminación de Puntos de Navegación Lateral
-window.addEventListener('scroll', () => {
-  let current = '';
-  const scrollPosition = window.pageYOffset + (window.innerHeight / 3);
-  
-  sections.forEach(secId => {
-    const el = document.getElementById(secId);
-    if (el) {
-      const top = el.offsetTop;
-      if (scrollPosition >= top) {
-        current = secId;
-      }
-    }
-  });
-
-  const dots = document.querySelectorAll('.dot');
-  dots.forEach(dot => {
-    dot.classList.remove('active');
-    if (dot.getAttribute('onclick').includes(current)) {
-      dot.classList.add('active');
-    }
-  });
-
-  const indicator = document.querySelector('.scroll-pos');
-  if (indicator && current) {
-    let index = sections.indexOf(current) + 1;
-    indicator.textContent = `0${index} // ${current.toUpperCase()}`;
-  }
-});
-
-function scrollToSection(id) {
-  const target = document.getElementById(id);
-  if (target) {
-    window.scrollTo({
-      top: target.offsetTop,
-      behavior: 'smooth'
-    });
-  }
-}
-
-/* ═══════════════════════════════════════
-   BASE DE DATOS NARRATIVA VISUAL (FOTOS)
-═══════════════════════════════════════ */
-const FOTOS = [
-  {
-    title: "La Huella del Cenote",
-    desc: "Erosión hídrica en las estructuras subterráneas de la periferia arqueológica.",
-    tag: "territorios",
-    ratio: "ratio-h"
-  },
-  {
-    title: "Cuerpo de Barro II",
-    desc: "Manos artesanas moldeando los límites de la memoria física y el olvido estatal.",
-    tag: "memoria",
-    ratio: "ratio-v"
-  },
-  {
-    title: "Resistencia Silenciosa",
-    desc: "Registro visual de la marcha cívica sobre el trazo colonial de la capital.",
-    tag: "resistencia",
-    ratio: "ratio-h"
-  },
-  {
-    title: "Arquitectura Ocre",
-    desc: "Análisis espectral y lumínico de las fachadas colapsadas en el Distrito Centro.",
-    tag: "territorios",
-    ratio: "ratio-v"
-  },
-  {
-    title: "Ritual de la Ceniza",
-    desc: "Prácticas de resguardo e identidad viva en las comunidades agrarias del oriente.",
-    tag: "memoria",
-    ratio: "ratio-h"
-  }
-];
-
-let filteredFotos = [...FOTOS];
-let lbIndex = 0;
-let lbFotos = [];
-
-function renderGallery(filter) {
-  const container = document.getElementById('galleryGrid');
-  if (!container) return;
-  container.innerHTML = '';
-
-  filteredFotos = filter === 'all' ? FOTOS : FOTOS.filter(f => f.tag === filter);
-
-  filteredFotos.forEach((foto, index) => {
-    const item = document.createElement('div');
-    item.className = `g-item ${foto.ratio}`;
-    item.innerHTML = `
-      <div class="g-img-wrap" onclick="openLB(${index})">
-        <div class="g-img-placeholder">
-          <span>${foto.title}</span>
-        </div>
-      </div>
-      <div class="g-meta">
-        <div class="g-info">
-          <h4>${foto.title}</h4>
-          <p>${foto.desc}</p>
-        </div>
-        <div class="g-tag">${foto.tag}</div>
-      </div>
-    `;
-    container.appendChild(item);
-  });
-}
-
-function filterGallery(tag, element) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  element.classList.add('active');
-  renderGallery(tag);
-}
-
-/* LÓGICA DE CONTROL DEL LIGHTBOX */
-function openLB(index) {
-  lbFotos = [...filteredFotos];
-  lbIndex = index;
-  const lb = document.getElementById('lightbox');
-  if (lb) {
-    lb.style.display = 'flex';
-    setTimeout(() => { lb.style.opacity = '1'; }, 10);
-    renderLB();
-  }
-}
-
-function renderLB() {
-  const foto = lbFotos[lbIndex];
-  if (!foto) return;
-  const canvas = document.getElementById('lbCanvas');
-  const title = document.getElementById('lb-title');
-  const desc = document.getElementById('lb-desc');
-  
-  if (title && desc) {
-    title.textContent = foto.title.toUpperCase();
-    desc.textContent = foto.desc;
-  }
-}
-
-function closeLB() {
-  const lb = document.getElementById('lightbox');
-  if (lb) {
-    lb.style.opacity = '0';
-    setTimeout(() => { lb.style.display = 'none'; }, 400);
-  }
-}
-
-// Inicializar eventos de Lightbox y Teclado de forma segura al cargar el DOM
-document.addEventListener("DOMContentLoaded", () => {
-  const lb = document.getElementById('lightbox');
-  
-  if (lb) {
-    document.getElementById('lb-close').addEventListener('click', closeLB);
-    
-    document.getElementById('lb-prev').addEventListener('click', () => {
-      lbIndex = (lbIndex - 1 + lbFotos.length) % lbFotos.length;
-      renderLB();
-    });
-    
-    document.getElementById('lb-next').addEventListener('click', () => {
-      lbIndex = (lbIndex + 1) % lbFotos.length;
-      renderLB();
-    });
-    
-    lb.addEventListener('click', e => {
-      if (e.target === lb) closeLB();
-    });
-    
-    document.addEventListener('keydown', e => {
-      if (lb.style.display !== 'flex') return;
-      if (e.key === 'ArrowLeft') {
-        lbIndex = (lbIndex - 1 + lbFotos.length) % lbFotos.length;
-        renderLB();
-      }
-      if (e.key === 'ArrowRight') {
-        lbIndex = (lbIndex + 1) % lbFotos.length;
-        renderLB();
-      }
-      if (e.key === 'Escape') closeLB();
-    });
-
-    // Soporte Touch Swipe en móviles para el Lightbox
-    let tStart = null;
-    lb.addEventListener('touchstart', e => { tStart = e.touches[0].clientX; });
-    lb.addEventListener('touchend', e => {
-      if (tStart === null) return;
-      const dx = e.changedTouches[0].clientX - tStart;
-      if (Math.abs(dx) > 50) {
-        lbIndex = dx < 0 ? (lbIndex + 1) % lbFotos.length : (lbIndex - 1 + lbFotos.length) % lbFotos.length;
-        renderLB();
-      }
-      tStart = null;
-    });
-  }
-
-  // Inicializar Galería por defecto
-  renderGallery('all');
-});
-
-// Lógica de movimiento suave del cursor personalizado (solo si no es táctil móvil)
-document.addEventListener('mousemove', e => {
-  const cur = document.getElementById('cur');
-  const curr = document.getElementById('cur-r');
-  if (cur && curr) {
-    cur.style.left = e.clientX + 'px';
-    cur.style.top = e.clientY + 'px';
-    setTimeout(() => {
-      curr.style.left = e.clientX + 'px';
-      curr.style.top = e.clientY + 'px';
-    }, 20);
-  }
-});
-
-/* ══ PARTÍCULAS HERO ══ */
-document.addEventListener("DOMContentLoaded", () => {
-  const hero = document.getElementById('hero');
-  if (hero) {
-    const s = document.createElement('style');
-    s.textContent = '@keyframes floatUp{0%{opacity:0;transform:translateY(0) translateX(0);}12%{opacity:.6;}88%{opacity:.1;}100%{opacity:0;transform:translateY(-90vh) translateX(var(--d));}}';
-    document.head.appendChild(s);
-    
-    ['rgba(196,134,26', 'rgba(42,92,69', 'rgba(122,59,30'].forEach(c => {
-      for (let i = 0; i < 6; i++) {
-        const p = document.createElement('div');
-        const sz = Math.random() * 4 + 2;
-        p.style.cssText = `
-          position:absolute; bottom:-20px; background:${c},${Math.random()*.4});
-          border-radius:50%; width:${sz}px; height:${sz}px;
-          left:${Math.random()*100}%; --d:${Math.random()*80-40}px;
-          animation:floatUp ${Math.random()*12+8}s ease-in-out ${Math.random()*10}s infinite;
-          pointer-events:none; z-index:1;
-        `;
-        hero.appendChild(p);
-      }
-    });
-  }
-});
-</script>
 </head>
 <body>
 
 <div id="cur"></div>
 <div id="cur-r"></div>
+<div class="country-tag">El Salvador</div>
 
-<div id="portal">
-  <div id="portalVoid"></div>
-  <div class="portal-content">
-    <h1 class="portal-title">TECUANI MISHPANTI</h1>
-    <p class="portal-sub">Fotoperiodismo · Archivo Biocultural</p>
-    <button class="portal-btn" onclick="enter()">Cruzar el Umbral</button>
-  </div>
+<!-- Indicador scroll lateral -->
+<div class="scroll-pos" id="scrollDots">
+  <div class="sp-dot active" data-section="hero"    onclick="scrollTo('hero')"></div>
+  <div class="sp-dot"       data-section="acto1"   onclick="scrollTo('acto1')"></div>
+  <div class="sp-dot"       data-section="acto2"   onclick="scrollTo('acto2')"></div>
+  <div class="sp-dot"       data-section="acto3"   onclick="scrollTo('acto3')"></div>
+  <div class="sp-dot"       data-section="galeria" onclick="scrollTo('galeria')"></div>
+  <div class="sp-dot"       data-section="universo" onclick="scrollTo('universo')"></div>
 </div>
 
+<!-- ══════════════════════════════════
+     PORTAL — ENTRADA
+══════════════════════════════════ -->
+<div id="portal">
+  <div class="portal-void" id="portalVoid"></div>
+
+  <div class="portal-mirror">
+    <div class="portal-mirror-frame"></div>
+    <div class="portal-mirror-surface">
+      <img class="portal-jaguar-img" src="img/jaguar.jpg" alt="">
+      <!-- Rayo portal -->
+      <div class="portal-lightning">
+        <div class="portal-flash"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="portal-name">TECUANI MISHPANTI</div>
+  <div class="portal-sub">Biocultural · El Salvador</div>
+  <button class="portal-btn" onclick="enter()">Entrar</button>
+</div>
+
+<!-- ══════════════════════════════════
+     MAIN
+══════════════════════════════════ -->
 <div id="main">
 
-  <header>
-    <div class="brand">TECUANI<span>.M</span></div>
-    <nav class="nav-links">
-      <a href="#hero" class="nav-item" onclick="scrollToSection('hero'); return false;">Inicio</a>
-      <a href="#acto1" class="nav-item" onclick="scrollToSection('acto1'); return false;">Manifiesto</a>
-      <a href="#acto3" class="nav-item" onclick="scrollToSection('acto3'); return false;">Taxonomía</a>
-      <a href="#galeria" class="nav-item" onclick="scrollToSection('galeria'); return false;">Galería</a>
-      <a href="#universo" class="nav-item" onclick="scrollToSection('universo'); return false;">Contacto</a>
-    </nav>
-  </header>
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">TM</a>
+  <ul class="nav-links">
+    <li><a href="#acto1">La Caminata</a></li>
+    <li><a href="#acto2">Caída y Muerte</a></li>
+    <li><a href="#acto3">El Nacimiento</a></li>
+    <li><a href="#galeria">El Trabajo</a></li>
+    <li><a href="#universo">Universo</a></li>
+  </ul>
+</nav>
 
-  <div id="scrollDots">
-    <div class="dot active" onclick="scrollToSection('hero')"></div>
-    <div class="dot" onclick="scrollToSection('acto1')"></div>
-    <div class="dot" onclick="scrollToSection('acto2')"></div>
-    <div class="dot" onclick="scrollToSection('acto3')"></div>
-    <div class="dot" onclick="scrollToSection('galeria')"></div>
-    <div class="dot" onclick="scrollToSection('universo')"></div>
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="axis-mundi"></div>
+
+  <!-- Anillos ambientales -->
+  <div class="mirror-wrap">
+    <div class="amb-ring"></div>
+    <div class="amb-ring"></div>
+    <div class="amb-ring"></div>
+
+    <div class="mirror-frame"></div>
+    <div class="mirror-surface">
+      <div class="jaguar-layer">
+        <img class="jaguar-img" src="img/jaguar.jpg" alt="">
+      </div>
+
+      <!-- ══ SISTEMA DE RAYO — TLALOC ══ -->
+      <div class="thunder-layer">
+        <div class="thunder-flash"></div>
+        <!-- Bolt SVG -->
+        <svg class="lightning-bolt" viewBox="0 0 320 320" fill="none">
+          <polyline points="172,28 138,148 168,148 132,292" stroke="rgba(200,215,255,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="172,28 138,148 168,148 132,292" stroke="rgba(255,255,255,.4)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="blur(2px)"/>
+        </svg>
+      </div>
+      <div class="thunder-glow"></div>
+
+      <div class="smoke smoke-a"></div>
+      <div class="smoke smoke-b"></div>
+      <div class="mirror-glint"></div>
+    </div>
+    <div class="mirror-label">Tezcatlipoca · El espejo humeante</div>
   </div>
 
-  <div class="country-tag">San Salvador, Centroamérica</div>
-  <div class="scroll-pos">01 // HERO</div>
-
-  <section id="hero">
-    <div class="hero-wrapper">
-      <span class="hero-subtitle">Proyecto Independiente</span>
-      <h2 class="hero-title">El Espanto<span>Narrativa, historia y memoria de los suelos heridos.</span></h2>
-      <div class="hero-meta">
-        <div class="meta-block">
-          <h5>Enfoque</h5>
-          <p>Investigación Biocultural</p>
-        </div>
-        <div class="meta-block">
-          <h5>Territorio</h5>
-          <p>El Salvador / Zona Paracentral</p>
-        </div>
-      </div>
+  <!-- Texto hero -->
+  <div class="hero-text">
+    <div class="hero-eyebrow">Fotoperiodista · Documentalista · El Salvador</div>
+    <h1 class="hero-name">
+      TECUANI
+      <span>Mishpanti</span>
+    </h1>
+    <div class="hero-tres">
+      Biocultural <span>·</span> Sagrado y Profano <span>·</span> Territorios
     </div>
-  </section>
+    <p class="hero-tagline">El mito como lente. El territorio como texto.</p>
+  </div>
 
-  <section id="acto1">
+  <div class="scroll-cue">
+    <div class="scroll-cue-line"></div>
+    <span class="scroll-cue-label">Descender</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     ACTO I — LA CAMINATA NOCTURNA
+══════════════════════════════════ -->
+<section id="acto1" class="sec">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <span class="sec-num">Acto I</span>
+      <h2 class="sec-title">La caminata nocturna de Tecuani</h2>
+      <div class="sec-rule"></div>
+    </div>
+
     <div class="acto1-layout">
-      <div class="acto1-txt-left">
-        <span class="acto-label">Acto I</span>
-        <h2>Resistencia / Existencia</h2>
-        <p>Una exploración visual y etnográfica de los núcleos urbanos remotos y las dinámicas sociales que sostienen la identidad frente a los desplazamientos económicos contemporáneos.</p>
-        <p>A través de la cámara digital y el análisis de mapas del siglo XIX, rastreamos los hilos invisibles de comunidades que sobreviven resguardando sus reliquias arqueológicas y espirituales.</p>
+      <!-- Columna izquierda: texto -->
+      <div class="acto1-text reveal">
+        <span class="acto1-numero">El mundo ordinario · La llamada</span>
+        <h3 class="acto1-titulo">En el principio<br>era el caos</h3>
+        <div class="acto1-cuerpo">
+          <p>Antes de ser Tecuani, hubo un aprendiz. <strong>Un hombre que usaba máscaras</strong> — y cuando usas una máscara mucho tiempo, empiezas a creer que es tu verdadero rostro.</p>
+          <p>El trabajo lo llevó a las primeras redacciones: <em>GatoEncerrado, La Galera Teatro y Cocina.</em> Un niño aprendiendo a ver. Un huevo sin reventar. El caos no como destrucción — como potencial sin forma todavía.</p>
+          <p>Tres fuerzas lo moldearon antes de que supiera que lo estaban moldeando.</p>
+        </div>
       </div>
+
       <div class="acto1-divider"></div>
-      <div class="acto1-txt-right">
-        "Registrar el espacio urbano no es mapear sus avenidas o inventariar su arquitectura; es desenterrar las cicatrices geográficas donde los cuerpos ejercen su derecho a permanecer."
-      </div>
-    </div>
-  </section>
 
-  <section id="acto2">
-    <div class="manifesto-box">
-      <span class="acto-label">Acto II</span>
-      <h3 class="manifesto-title">Crónicas Ocultas</h3>
-      <p class="manifesto-body">
-        La fotografía no es un espejo de la realidad, sino un <em>escarpelo arqueológico</em>. Capturar una imagen implica cortar el tiempo, fracturar el espacio y obligar a los vestigios del pasado a dialogar directamente con la crudeza del presente.
-      </p>
-      <div class="manifesto-author">— Tecuani Mishpanti, Declaración de Principios</div>
-      
-      <div class="espejo-acto2">
-        <div class="espejo-inner"></div>
-      </div>
-    </div>
-  </section>
+      <!-- Columna derecha: los tres elementos -->
+      <div class="elementos-trio reveal rd1">
 
-  <section id="acto3">
-    <div class="acto3-wrapper">
-      <span class="acto-label">Acto III</span>
-      <h3 class="hero-title" style="font-size: 2.2rem; margin-bottom: 1rem;">Ejes de Investigación</h3>
-      
-      <div class="grid-taxonomia">
-        <div class="tax-card">
-          <span class="tax-num">01 / T</span>
-          <h4 class="tax-title">Suelos de Ocre</h4>
-          <p class="tax-desc">Cartografía visual de la devastación agraria y los mapas coloniales que delimitaron la propiedad comunal indígena centroamericana.</p>
-        </div>
-        <div class="tax-card">
-          <span class="tax-num">02 / M</span>
-          <h4 class="tax-title">El Registro Humano</h4>
-          <p class="tax-desc">Retratos de primer plano técnico enfocados en las huellas de artesanos, hilanderas y curadores de la memoria oral en los pueblos vivos.</p>
-        </div>
-        <div class="tax-card">
-          <span class="tax-num">03 / R</span>
-          <h4 class="tax-title">Ceniza y Barro</h4>
-          <p class="tax-desc">Documentación sistemática de los vestigios físicos de objetos e infraestructuras vernáculas colapsadas por el abandono o la guerra.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="galeria">
-    <div class="galeria-header">
-      <div>
-        <span class="acto-label">Evidencia</span>
-        <h3 class="hero-title" style="font-size: 2.2rem; margin-bottom: 0;">Muestra Documental</h3>
-      </div>
-      <div class="filter-tabs">
-        <span class="tab active" onclick="filterGallery('all', this)">Todo</span>
-        <span class="tab" onclick="filterGallery('territorios', this)">Territorios</span>
-        <span class="tab" onclick="filterGallery('memoria', this)">Memoria</span>
-        <span class="tab" onclick="filterGallery('resistencia', this)">Resistencia</span>
-      </div>
-    </div>
-
-    <div class="g-grid" id="galleryGrid">
-      </div>
-  </section>
-
-  <section id="universo">
-    <div class="universo-grid">
-      <div class="uni-left">
-        <span class="acto-label">Contacto</span>
-        <p>Abierto a colaboraciones editoriales, proyectos de investigación de campo y consultorías de preservación visual a nivel internacional.</p>
-        
-        <div class="uni-details">
-          <div class="uni-line">
-            <h6>Canal Directo</h6>
-            <a href="mailto:contacto@tecuani.site">contacto@tecuani.site</a>
+        <div class="elemento-item">
+          <div class="el-icono">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+              <path d="M20 8 Q24 16 22 24 Q20 30 18 24 Q16 16 20 8Z" fill="rgba(44,74,107,.7)"/>
+              <path d="M20 22 Q26 26 24 33 Q20 38 16 33 Q14 26 20 22Z" fill="rgba(44,74,107,.5)"/>
+              <circle cx="20" cy="28" r="7" stroke="rgba(44,74,107,.3)" stroke-width=".8" fill="none"/>
+            </svg>
           </div>
-          <div class="uni-line">
-            <h6>Cuartel Operativo</h6>
-            <p>Soyapango, San Salvador, SV</p>
+          <div class="el-body">
+            <div class="el-nombre">Agua</div>
+            <span class="el-nombre-sub">Apan · Río que enseña y mata</span>
+            <p class="el-texto">El Sensunapan y el Ceniza. Caer sesenta metros al barranco de la Periquera y sobrevivir. El bautismo cristiano. Casi ahogarse, varias veces. El agua como maestro brutal.</p>
           </div>
         </div>
+
+        <div class="elemento-item">
+          <div class="el-icono">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+              <path d="M8 20 Q14 14 20 20 Q26 26 32 20" stroke="rgba(154,149,144,.6)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+              <path d="M8 26 Q16 18 24 24 Q30 28 34 22" stroke="rgba(154,149,144,.4)" stroke-width=".8" fill="none" stroke-linecap="round"/>
+              <circle cx="20" cy="12" r="2" fill="rgba(154,149,144,.4)"/>
+            </svg>
+          </div>
+          <div class="el-body">
+            <div class="el-nombre">Viento</div>
+            <span class="el-nombre-sub">Ehecat · El que empuja y derriba</span>
+            <p class="el-texto">Las caídas. Lo que el viento se llevó y lo que dejó. Cada derrumbe fue también un despeje — el horizonte se ve mejor desde el suelo.</p>
+          </div>
+        </div>
+
+        <div class="elemento-item">
+          <div class="el-icono">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+              <path d="M20 34 Q16 24 20 14 Q22 20 26 18 Q24 26 20 34Z" fill="rgba(196,134,26,.6)"/>
+              <path d="M14 30 Q12 22 16 16 Q18 22 20 18 Q18 26 14 30Z" fill="rgba(139,26,26,.45)"/>
+              <circle cx="20" cy="32" r="3" fill="rgba(196,134,26,.3)"/>
+            </svg>
+          </div>
+          <div class="el-body">
+            <div class="el-nombre">Fuego</div>
+            <span class="el-nombre-sub">Tletl · El polletón de la abuela</span>
+            <p class="el-texto">La cocina indígena junto a la que murió su abuela. Esa fogata no se apagó — se convirtió en el fuego donde ahora se cuentan las historias.</p>
+          </div>
+        </div>
+
       </div>
-
-      <div class="uni-right">
-        <form class="uni-form" onsubmit="event.preventDefault(); alert('Mensaje cifrado y enviado al archivo.');">
-          <div class="form-group">
-            <input type="text" id="name" placeholder=" " required>
-            <label for="name">Identidad / Institución</label>
-          </div>
-          <div class="form-group">
-            <input type="email" id="email" placeholder=" " required>
-            <label for="email">Canal Electrónico</label>
-          </div>
-          <div class="form-group">
-            <textarea id="msg" placeholder=" " required></textarea>
-            <label for="msg">Propósito o Requerimiento de Campo</label>
-          </div>
-          <button type="submit" class="form-btn">Transmitir Mensaje</button>
-        </form>
-      </div>
-    </div>
-
-    <footer>
-      <div>© 2026 Tecuani Mishpanti. Reservados todos los derechos documentales.</div>
-      <div>Hecho en El Salvador · Preservando la Memoria Colectiva</div>
-    </footer>
-  </section>
-
-</div>
-
-<div id="lightbox">
-  <div class="lb-close-area"></div>
-  <div id="lb-close">×</div>
-  <div class="lb-wrapper">
-    <div class="lb-canvas" id="lbCanvas">
-      <div class="lb-nav-btn" id="lb-prev">‹</div>
-      <div class="lb-nav-btn" id="lb-next">›</div>
-    </div>
-    <div class="lb-caption-box">
-      <h4 id="lb-title"></h4>
-      <p id="lb-desc"></p>
     </div>
   </div>
-</div>
+</section>
 
+<!-- ══════════════════════════════════
+     ACTO II — CAÍDA Y MUERTE
+══════════════════════════════════ -->
+<section id="acto2" class="sec">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <span class="sec-num">Acto II</span>
+      <h2 class="sec-title">Caída y muerte</h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <!-- Espejo secundario con rayo -->
+    <div class="espejo-acto2 reveal">
+      <div class="espejo-acto2-frame"></div>
+      <div class="espejo-acto2-surface">
+        <img class="espejo-acto2-jaguar" src="img/jaguar.jpg" alt="">
+        <div class="espejo-acto2-flash"></div>
+      </div>
+      <div class="espejo-acto2-glow"></div>
+    </div>
+
+    <div class="acto2-inner">
+      <span class="acto2-numero reveal rd1">La iniciación · La herida · El pacto</span>
+      <h3 class="acto2-titulo reveal rd2">El jaguar primordial<br>estaba sentado frente a una fogata</h3>
+
+      <div class="historia-jaguar">
+        <p class="hj-par reveal">Una gran tormenta lo derribó. <strong>Cayó al río desde un barranco de setenta metros.</strong> Cuando creía que llegaba su fin, la cola de la serpiente lo sostuvo desde una rama que salía de las paredes que contenían el río.</p>
+        <p class="hj-par reveal rd1">Fue puesto sobre tierra frente a una gigantesca cueva. Entró. El jaguar primordial estaba sentado frente a una fogata. <em>Sígueme</em>, le dijo.</p>
+        <p class="hj-par reveal rd2">Juntos caminaron por una serpiente gigante que se extendía como un camino infinito. Era de noche, pero parecía de día. Quizás era al revés. Llegaron a una aldea — casas de madera y zacate, una familia adentro esperándolo. <em>Come</em>, dijo el jaguar.</p>
+        <p class="hj-par reveal">Fueron a pescar al río. El jaguar enseñaba a sus hijos. Se escucharon gritos de guerra, tambores, caracoles a lo lejos. El jaguar se ataviaba para la batalla. <strong>Era un guerrero. Todos le seguían. Sus rivales le temían.</strong></p>
+        <p class="hj-par reveal rd1">Hubo fiesta. El jaguar tomó una cuchilla de obsidiana, tomó su mano derecha e hizo una fisura. Colocó sangre en la boca del estómago, en el corazón, en la frente, untó las dos manos — y apareció de nuevo donde había comenzado todo. Era de día.</p>
+        <p class="hj-par reveal rd2">El gran jaguar se fue como humo. <strong>Buscó la herida en sus manos. No encontró nada.</strong> Pero algo había pasado.</p>
+      </div>
+
+      <div class="acto2-cierre reveal">
+        <p><em>Ese fue el nacimiento de Tecuani.</em><br>El de las máscaras, el que mira con los lentes del mito,<br>artesano de la imagen, la palabra, el cartón y el papel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     ACTO III — EL NACIMIENTO
+══════════════════════════════════ -->
+<section id="acto3" class="sec">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <span class="sec-num">Acto III</span>
+      <h2 class="sec-title">El nacimiento de Tecuani Mishpanti</h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="acto3-inner">
+      <span class="acto3-numero reveal">El regreso · El don · La tierra ordenada</span>
+      <h3 class="acto3-titulo reveal rd1">El que vuelve del territorio<br>trae historias</h3>
+      <span class="acto3-sub reveal rd2">Moyocoyani — el que se crea a sí mismo</span>
+
+      <p class="acto3-texto reveal">El héroe que regresa no vuelve igual. Vuelve con un <strong>don para su comunidad</strong> — una nueva manera de ver, de nombrar, de preservar. Tecuani recorrió el inframundo, el mundo terrenal y el supramundo no para quedarse — sino para traer de vuelta lo que encontró.</p>
+      <p class="acto3-texto reveal rd1">Su regalo es la imagen. <em>El ojo entrenado en el mito que ve lo sagrado donde otros ven lo ordinario.</em> El fotógrafo documental, el fotoperiodista biocultural, el narrador de lo que está a punto de desaparecer.</p>
+      <p class="acto3-texto reveal rd2">La cámara es el espejo humeante. El territorio es el texto. La historia, el hilo de obsidiana que lo atraviesa todo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     GALERÍA — EL TRABAJO
+══════════════════════════════════ -->
+<section id="galeria">
+  <div class="galeria-header">
+    <span class="sec-num reveal">El trabajo</span>
+    <h2 class="sec-title reveal rd1">Archivo fotográfico</h2>
+    <div class="sec-rule"></div>
+  </div>
+
+  <div class="galeria-grid">
+    <!-- Para agregar fotos: reemplaza el div.foto-bg con <img class="foto-bg" src="img/TU-FOTO.jpg" alt="descripción"> -->
+    <div class="foto f1 reveal">
+      <div class="foto-bg"></div>
+      <div class="foto-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>img/foto.jpg</span>
+      </div>
+      <div class="foto-label"><span class="foto-label-txt">Mercados · Territorio</span></div>
+    </div>
+
+    <div class="foto f2 reveal">
+      <div class="foto-bg"></div>
+      <div class="foto-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>img/foto.jpg</span>
+      </div>
+      <div class="foto-label"><span class="foto-label-txt">Ritos · Altares</span></div>
+    </div>
+
+    <div class="foto f3 reveal">
+      <div class="foto-bg"></div>
+      <div class="foto-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>img/foto.jpg</span>
+      </div>
+      <div class="foto-label"><span class="foto-label-txt">Ciudad</span></div>
+    </div>
+
+    <div class="foto f4 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Gente trabajando</span></div></div>
+    <div class="foto f5 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Foto de calle</span></div></div>
+    <div class="foto f6 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Lo sagrado</span></div></div>
+    <div class="foto f7 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Territorio</span></div></div>
+    <div class="foto f8 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Comunidades</span></div></div>
+    <div class="foto f9 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Lo profano</span></div></div>
+    <div class="foto f10 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Memoria</span></div></div>
+    <div class="foto f11 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Resistencia</span></div></div>
+    <div class="foto f12 reveal"><div class="foto-bg"></div><div class="foto-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>img/foto.jpg</span></div><div class="foto-label"><span class="foto-label-txt">Biocultural</span></div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     UNIVERSO TECUANI
+══════════════════════════════════ -->
+<section id="universo">
+  <svg class="universo-glifo" viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="90" stroke="rgba(196,134,26,.5)" stroke-width=".8"/>
+    <circle cx="100" cy="100" r="60" stroke="rgba(42,92,69,.4)" stroke-width=".8"/>
+    <circle cx="100" cy="100" r="32" stroke="rgba(196,134,26,.55)" stroke-width=".8"/>
+    <line x1="100" y1="10" x2="100" y2="190" stroke="rgba(196,134,26,.2)" stroke-width=".5"/>
+    <line x1="10" y1="100" x2="190" y2="100" stroke="rgba(196,134,26,.2)" stroke-width=".5"/>
+    <path d="M100 68 Q107 80 100 100 Q93 80 100 68Z" fill="rgba(196,134,26,.45)"/>
+    <path d="M132 100 Q120 107 100 100 Q120 93 132 100Z" fill="rgba(196,134,26,.35)"/>
+    <path d="M100 132 Q93 120 100 100 Q107 120 100 132Z" fill="rgba(196,134,26,.35)"/>
+    <path d="M68 100 Q80 93 100 100 Q80 107 68 100Z" fill="rgba(196,134,26,.35)"/>
+    <circle cx="100" cy="100" r="5" fill="rgba(196,134,26,.85)"/>
+  </svg>
+
+  <span class="universo-sub reveal">El cosmos ordenado · Taltikpak</span>
+  <h2 class="universo-titulo reveal rd1">Universo Tecuani</h2>
+  <p class="universo-desc reveal rd2">El héroe regresó con sus herramientas. Aquí convergen el mito, la imagen y la palabra.</p>
+
+  <div class="universo-grid reveal rd3">
+    <a href="https://revistayopi-prog.github.io/yopi" target="_blank" class="u-item u-yopi">
+      <span class="u-icono">◈</span>
+      <span class="u-nombre">YOPI</span>
+      <span class="u-desc">Revista biocultural<br>Territorios · Memoria · Resistencia<br>Centroamérica</span>
+    </a>
+
+    <a href="https://substack.com" target="_blank" class="u-item u-substack">
+      <span class="u-icono">✦</span>
+      <span class="u-nombre">SUBSTACK</span>
+      <span class="u-desc">Escritura y ensayo<br>El mito como lente<br>Suscripción abierta</span>
+    </a>
+
+    <a href="https://youtube.com" target="_blank" class="u-item u-youtube">
+      <span class="u-icono">▶</span>
+      <span class="u-nombre">TECUANI NARRADOR</span>
+      <span class="u-desc">Canal de YouTube<br>Mitos · Terror folclórico<br>La voz del inframundo</span>
+      <span class="u-badge">En construcción</span>
+    </a>
+
+    <a href="#" class="u-item u-ig">
+      <span class="u-icono">◉</span>
+      <span class="u-nombre">INSTAGRAM</span>
+      <span class="u-desc">Archivo visual<br>Fotografía documental<br>Territorio y rito</span>
+    </a>
+
+    <div class="u-item u-artesano" style="cursor:default;">
+      <span class="u-icono">✧</span>
+      <span class="u-nombre">EL ARTESANO</span>
+      <span class="u-desc">Cartonería · Máscaras rituales<br>Encuadernación maestra<br>Dibujo</span>
+      <span class="u-badge">En formación</span>
+    </div>
+
+    <a href="mailto:contacto@tecuanimishpanti.com" class="u-item u-contacto">
+      <span class="u-icono">→</span>
+      <span class="u-nombre">CONTACTO</span>
+      <span class="u-desc">Proyectos editoriales<br>Colaboraciones bioculturales<br>Encargos documentales</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-name">TECUANI MISHPANTI</div>
+  <div class="ft-nahuatl">Moyocoyani · Pante de estrellas</div>
+  <div class="ft-year">© 2026</div>
+</footer>
+
+</div><!-- /main -->
+
+<script>
+/* ══ CURSOR CUSTOM ══ */
+const cur=document.getElementById('cur');
+const curR=document.getElementById('cur-r');
+let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
+
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  curR.style.left=rx+'px'; curR.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.foto,.u-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{curR.style.width='48px';curR.style.height='48px';curR.style.borderColor='rgba(196,134,26,.5)';});
+  el.addEventListener('mouseleave',()=>{curR.style.width='26px';curR.style.height='26px';curR.style.borderColor='rgba(196,134,26,.3)';});
+});
+
+/* ══ PORTAL ══ */
+document.body.style.overflow='hidden';
+
+/* Partículas vacío */
+(function(){
+  const v=document.getElementById('portalVoid');
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    const sz=Math.random()*.7+.15;
+    p.style.cssText=`position:absolute;border-radius:50%;background:rgba(196,134,26,.4);
+      width:${sz}px;height:${sz}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      animation:voidFloat ${Math.random()*18+12}s linear ${Math.random()*12}s infinite;`;
+    v.appendChild(p);
+  }
+  const s=document.createElement('style');
+  s.textContent='@keyframes voidFloat{0%{opacity:0;transform:translateY(0);}40%{opacity:.12;}100%{opacity:0;transform:translateY(-100vh);}}';
+  document.head.appendChild(s);
+})();
+
+function enter(){
+  document.getElementById('portal').classList.add('out');
+  document.getElementById('main').classList.add('on');
+  setTimeout(()=>{document.body.style.overflow='auto';},900);
+}
+
+/* ══ DOTS SCROLL INDICATOR ══ */
+const sections=['hero','acto1','acto2','acto3','galeria','universo'];
+const dots=document.querySelectorAll('.sp-dot');
+function updateDots(){
+  const sy=window.scrollY+window.innerHeight/2;
+  let active=0;
+  sections.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el && sy>=el.offsetTop) active=i;
+  });
+  dots.forEach((d,i)=>d.classList.toggle('active',i===active));
+}
+window.addEventListener('scroll',updateDots,{passive:true});
+
+function scrollTo(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+}
+
+/* ══ REVEAL ON SCROLL ══ */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ══ PARTÍCULAS HERO ══ */
+(function(){
+  const hero=document.getElementById('hero');
+  const s=document.createElement('style');
+  s.textContent='@keyframes floatUp{0%{opacity:0;transform:translateY(0) translateX(0);}12%{opacity:.6;}88%{opacity:.1;}100%{opacity:0;transform:translateY(-90vh) translateX(var(--d));}}';
+  document.head.appendChild(s);
+  ['rgba(196,134,26','rgba(42,92,69','rgba(122,59,30'].forEach(c=>{
+    for(let i=0;i<6;i++){
+      const p=document.createElement('div');
+      const sz=Math.random()*1.2+.2;
+      p.style.cssText=`position:absolute;border-radius:50%;pointer-events:none;
+        width:${sz}px;height:${sz}px;
+        background:${c},${Math.random()*.18+.05});
+        left:${Math.random()*100}%;bottom:-4px;
+        animation:floatUp ${Math.random()*14+10}s linear ${Math.random()*10}s infinite;
+        --d:${Math.random()*100-50}px;`;
+      hero.appendChild(p);
+    }
+  });
+})();
+</script>
 </body>
 </html>
