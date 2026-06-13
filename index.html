@@ -1177,7 +1177,7 @@ footer {
       <span style="font-family:'IBM Plex Mono',monospace;font-size:.4rem;letter-spacing:.35em;color:var(--gris);text-transform:uppercase;line-height:1.8;display:block;">Escritura y ensayo<br>El mito como lente<br>Publicación semanal</span>
     </a>
 
-    <a href="mailto:<!-- PENDIENTE: agregar correo -->" style="padding:3.5rem 2.5rem;background:rgba(196,134,26,.06);border-top:1px solid rgba(196,134,26,.1);text-decoration:none;display:block;transition:background .4s;" onmouseover="this.style.background='rgba(196,134,26,.12)'" onmouseout="this.style.background='rgba(196,134,26,.06)'">
+    <a href="mailto:tecuanimishpanti@gmail.com" style="padding:3.5rem 2.5rem;background:rgba(196,134,26,.06);border-top:1px solid rgba(196,134,26,.1);text-decoration:none;display:block;transition:background .4s;" onmouseover="this.style.background='rgba(196,134,26,.12)'" onmouseout="this.style.background='rgba(196,134,26,.06)'">
       <span style="font-family:'IBM Plex Mono',monospace;font-size:1.1rem;margin-bottom:1.2rem;display:block;opacity:.5;">→</span>
       <span style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.18em;color:var(--ocre);font-weight:400;margin-bottom:.4rem;display:block;">CONTACTO</span>
       <span style="font-family:'IBM Plex Mono',monospace;font-size:.4rem;letter-spacing:.35em;color:var(--gris);text-transform:uppercase;line-height:1.8;display:block;">Proyectos editoriales<br>Colaboraciones documentales<br>Encargos fotográficos</span>
@@ -1248,8 +1248,25 @@ function enter(){
   setTimeout(()=>{document.body.style.overflow='auto';},900);
 }
 
+/* ══ SPIN ══ */
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ══ SERIE TABS ══ */
+.stab{font-family:'IBM Plex Mono',monospace;font-size:.42rem;letter-spacing:.42em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;color:var(--gris);padding:.9rem 1.8rem;cursor:pointer;transition:all .3s;white-space:nowrap;}
+.stab:hover{color:var(--hueso);}
+.stab.stab-on{color:var(--ocre);border-bottom-color:var(--ocre);}
+
+/* ══ GALERÍA GRID ITEMS ══ */
+.g-item{break-inside:avoid;margin-bottom:2px;position:relative;overflow:hidden;cursor:pointer;display:block;background:var(--negro-barro);}
+.g-item img{width:100%;display:block;transition:transform .8s cubic-bezier(.4,0,.2,1),filter .5s;filter:brightness(.9) saturate(.88);}
+.g-item:hover img{transform:scale(1.04);filter:brightness(1) saturate(1);}
+.g-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,5,4,.92) 0%,transparent 55%);opacity:0;transition:opacity .4s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.4rem;}
+.g-item:hover .g-overlay{opacity:1;}
+.g-serie{font-family:'IBM Plex Mono',monospace;font-size:.38rem;letter-spacing:.45em;color:var(--ocre);text-transform:uppercase;margin-bottom:.3rem;}
+.g-cap{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-style:italic;font-weight:300;color:var(--hueso);line-height:1.4;}
+
 /* ══ DOTS SCROLL INDICATOR ══ */
-const sections=['hero','acto1','acto2','acto3','galeria','universo'];
+const sections=['hero','acto1','acto2','acto3','galeria','contacto'];
 const dots=document.querySelectorAll('.sp-dot');
 function updateDots(){
   const sy=window.scrollY+window.innerHeight/2;
@@ -1271,6 +1288,148 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ══════════════════════════════════
+   GALERÍA — DATOS Y LÓGICA
+   Para agregar fotos: agrega objetos al array FOTOS.
+   src: ruta relativa desde la raíz del repo (ej: "img/mercados/foto1.jpg")
+   serie: "mercados" | "sagrado" | "centro" | "territorio" | "comunidades"
+   caption: pie de foto en español
+══════════════════════════════════ */
+const FOTOS = [
+  // ── MERCADO SAGRADO CORAZÓN ──
+  { src:'img/sagrado-corazon-porton.jpg',   serie:'mercados',    caption:'Exterior, Portón 4 — Mercado Sagrado Corazón, San Salvador' },
+  { src:'img/sagrado-corazon-pasillo.jpg',  serie:'mercados',    caption:'Pasillos interiores — Mercado Sagrado Corazón' },
+  { src:'img/sagrado-corazon-altar.jpg',    serie:'mercados',    caption:'Altar del Sagrado Corazón en la nave del mercado, mayo 2026' },
+  { src:'img/sagrado-corazon-flores.jpg',   serie:'mercados',    caption:'Vendedora de flores — Mercado Sagrado Corazón, mayo 2026' },
+  { src:'img/sagrado-corazon-vendedor.jpg', serie:'mercados',    caption:'Vendedor en pasillo interior — Mercado Sagrado Corazón' },
+  { src:'img/sagrado-corazon-manteles.jpg', serie:'mercados',    caption:'Vendedor ambulante en los alrededores del mercado' },
+  // ── ECONOMÍA SAGRADA ──
+  { src:'img/velas-colores.jpg',            serie:'sagrado',     caption:'Velas rituales — Mercado Sagrado Corazón, mayo 2026' },
+  { src:'img/velas-negras.jpg',             serie:'sagrado',     caption:'Velas negras con figuras humanas — Mercado Sagrado Corazón' },
+  { src:'img/santa-muerte.jpg',             serie:'sagrado',     caption:'Santa Muerte tricolor y arcángel — sincretismo popular' },
+  { src:'img/san-simon.jpg',                serie:'sagrado',     caption:'San Simón — "Abre las Puertas del Éxito", mayo 2026' },
+  { src:'img/santos-letrero.jpg',           serie:'sagrado',     caption:'Santos católicos — Mercado Sagrado Corazón, mayo 2026' },
+  { src:'img/especias.jpg',                 serie:'sagrado',     caption:'Especias en jícara de barro — conocimiento mesoamericano vivo' },
+  // ── CENTRO HISTÓRICO ──
+  { src:'img/fatima-arbol.jpg',             serie:'centro',      caption:'Árbol penetrando tienda religiosa — Centro histórico, San Salvador' },
+  { src:'img/edificio-verde.jpg',           serie:'centro',      caption:'Arquitectura del centro histórico — San Salvador' },
+  { src:'img/jesucristo-viene.jpg',         serie:'centro',      caption:'"Jesucristo Viene Pronto" — Centro histórico, San Salvador' },
+  { src:'img/fachada-azul.jpg',             serie:'centro',      caption:'Fachada en proceso — Centro histórico, San Salvador' },
+  { src:'img/aves-cables.jpg',              serie:'centro',      caption:'Aves sobre cables eléctricos — San Salvador' },
+  { src:'img/biblia-figuras.jpg',           serie:'centro',      caption:'Sagrada Biblia con figuras prehispánicas — Centro histórico' },
+  // ── TERRITORIO ──
+  { src:'img/tiendona-pescadero.jpg',       serie:'territorio',  caption:'Mercado La Tiendona — San Salvador' },
+  { src:'img/tiendona-maiz.jpg',            serie:'territorio',  caption:'Vendedor de maíz — La Tiendona, San Salvador' },
+  { src:'img/tiendona-limones.jpg',         serie:'territorio',  caption:'Cargadores de limones — La Tiendona, San Salvador' },
+  { src:'img/tiendona-jesus.jpg',           serie:'territorio',  caption:'"Jesus es la Solución" — La Tiendona, San Salvador' },
+  // ── COMUNIDADES ──
+  { src:'img/ceremonia-altar.jpg',          serie:'comunidades', caption:'Construcción de altar — Ceremonia Nahua-Pipil, Nahuizalco 2023' },
+  { src:'img/ceremonia-circulo.jpg',        serie:'comunidades', caption:'Círculo participativo — Ceremonia, Nahuizalco 2023' },
+  { src:'img/ceremonia-detalle.jpg',        serie:'comunidades', caption:'Detalle ritual — Ceremonia Nahua-Pipil, Nahuizalco 2023' },
+];
+
+const SERIES_NOMBRES = {
+  mercados:    'Mercado Sagrado Corazón',
+  sagrado:     'Economía Sagrada',
+  centro:      'Centro Histórico',
+  territorio:  'La Tiendona · Territorio',
+  comunidades: 'Comunidades Nahua-Pipil',
+};
+
+// ── Estado lightbox ──
+let lbIndex = 0;
+let lbFotos = []; // subconjunto filtrado activo
+
+function renderGallery(serie) {
+  const grid = document.getElementById('galeria-grid');
+  const empty = document.getElementById('galeria-empty');
+  grid.innerHTML = '';
+  lbFotos = serie === 'all' ? [...FOTOS] : FOTOS.filter(f => f.serie === serie);
+
+  if (lbFotos.length === 0) {
+    empty.style.display = 'block';
+    grid.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = '';
+
+  lbFotos.forEach((foto, i) => {
+    const item = document.createElement('div');
+    item.className = 'g-item';
+    item.innerHTML = `
+      <img src="${foto.src}" alt="${foto.caption}" loading="lazy"
+           onerror="this.parentElement.style.display='none'">
+      <div class="g-overlay">
+        <div class="g-serie">${SERIES_NOMBRES[foto.serie] || foto.serie}</div>
+        <div class="g-cap">${foto.caption}</div>
+      </div>`;
+    item.addEventListener('click', () => openLB(i));
+    grid.appendChild(item);
+  });
+}
+
+// ── Tabs ──
+document.getElementById('serie-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.stab');
+  if (!btn) return;
+  document.querySelectorAll('.stab').forEach(b => b.classList.remove('stab-on'));
+  btn.classList.add('stab-on');
+  renderGallery(btn.dataset.serie);
+});
+
+// ── Lightbox ──
+const lb     = document.getElementById('lightbox');
+const lbImg  = document.getElementById('lb-img');
+const lbSer  = document.getElementById('lb-serie');
+const lbCap  = document.getElementById('lb-caption');
+const lbCnt  = document.getElementById('lb-counter');
+
+function openLB(i) {
+  lbIndex = i;
+  renderLB();
+  lb.style.display = 'flex';
+  requestAnimationFrame(() => lb.style.opacity = '1');
+  document.body.style.overflow = 'hidden';
+}
+function closeLB() {
+  lb.style.opacity = '0';
+  setTimeout(() => { lb.style.display = 'none'; }, 400);
+  document.body.style.overflow = 'auto';
+}
+function renderLB() {
+  const f = lbFotos[lbIndex];
+  if (!f) return;
+  lbImg.src = f.src;
+  lbSer.textContent = SERIES_NOMBRES[f.serie] || f.serie;
+  lbCap.textContent = f.caption;
+  lbCnt.textContent = (lbIndex + 1) + ' / ' + lbFotos.length;
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLB);
+document.getElementById('lb-prev').addEventListener('click', () => { lbIndex = (lbIndex - 1 + lbFotos.length) % lbFotos.length; renderLB(); });
+document.getElementById('lb-next').addEventListener('click', () => { lbIndex = (lbIndex + 1) % lbFotos.length; renderLB(); });
+lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+document.addEventListener('keydown', e => {
+  if (lb.style.display !== 'flex') return;
+  if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbFotos.length) % lbFotos.length; renderLB(); }
+  if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbFotos.length; renderLB(); }
+  if (e.key === 'Escape') closeLB();
+});
+
+// Touch swipe en lightbox
+let tStart = null;
+lb.addEventListener('touchstart', e => { tStart = e.touches[0].clientX; });
+lb.addEventListener('touchend', e => {
+  if (tStart === null) return;
+  const dx = e.changedTouches[0].clientX - tStart;
+  if (Math.abs(dx) > 50) { lbIndex = dx < 0 ? (lbIndex+1)%lbFotos.length : (lbIndex-1+lbFotos.length)%lbFotos.length; renderLB(); }
+  tStart = null;
+});
+
+// Init galería
+renderGallery('all');
 
 /* ══ PARTÍCULAS HERO ══ */
 (function(){
