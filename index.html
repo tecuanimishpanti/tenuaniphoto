@@ -38,23 +38,6 @@ body {
   cursor: none;
 }
 
-/* ══ SPIN ══ */
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-/* ══ SERIE TABS ══ */
-.stab{font-family:'IBM Plex Mono',monospace;font-size:.42rem;letter-spacing:.42em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;color:var(--gris);padding:.9rem 1.8rem;cursor:pointer;transition:all .3s;white-space:nowrap;}
-.stab:hover{color:var(--hueso);}
-.stab.stab-on{color:var(--ocre);border-bottom-color:var(--ocre);}
-
-/* ══ GALERÍA GRID ITEMS ══ */
-.g-item{break-inside:avoid;margin-bottom:2px;position:relative;overflow:hidden;cursor:pointer;display:block;background:var(--negro-barro);}
-.g-item img{width:100%;display:block;transition:transform .8s cubic-bezier(.4,0,.2,1),filter .5s;filter:brightness(.9) saturate(.88);}
-.g-item:hover img{transform:scale(1.04);filter:brightness(1) saturate(1);}
-.g-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,5,4,.92) 0%,transparent 55%);opacity:0;transition:opacity .4s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.4rem;}
-.g-item:hover .g-overlay{opacity:1;}
-.g-serie{font-family:'IBM Plex Mono',monospace;font-size:.38rem;letter-spacing:.45em;color:var(--ocre);text-transform:uppercase;margin-bottom:.3rem;}
-.g-cap{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-style:italic;font-weight:300;color:var(--hueso);line-height:1.4;}
-
 /* Grano de película sobre todo */
 body::after {
   content:'';
@@ -213,15 +196,20 @@ nav::before {
     radial-gradient(ellipse at 50% 68%, rgba(196,134,26,.04) 0%, transparent 50%);
 }
 
-/* Línea vertical axis mundi — visual, no texto */
+/* Línea vertical axis mundi — visual, no texto.
+   Transparente en la franja central (donde vive el texto del hero)
+   para que nunca cruce por encima de las letras. */
 .axis-mundi {
-  position:absolute; left:50%; top:0; bottom:0; width:1px;
+  position:absolute; left:50%; top:0; bottom:0; width:1px; z-index:1;
   transform:translateX(-50%);
   background:linear-gradient(to bottom,
     transparent 0%,
-    rgba(196,134,26,.08) 20%,
-    rgba(196,134,26,.18) 50%,
-    rgba(196,134,26,.08) 80%,
+    rgba(196,134,26,.16) 10%,
+    rgba(196,134,26,.16) 16%,
+    transparent 24%,
+    transparent 76%,
+    rgba(196,134,26,.16) 84%,
+    rgba(196,134,26,.16) 90%,
     transparent 100%);
   pointer-events:none;
 }
@@ -864,6 +852,19 @@ footer {
   #universo { padding:7rem 2rem; }
   .espejo-acto2 { width:200px; height:200px; }
 }
+/* ══ SERIE TABS ══ */
+.stab{font-family:'IBM Plex Mono',monospace;font-size:.42rem;letter-spacing:.42em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;color:var(--gris);padding:.9rem 1.8rem;cursor:pointer;transition:all .3s;white-space:nowrap;}
+.stab:hover{color:var(--hueso);}
+.stab.stab-on{color:var(--ocre);border-bottom-color:var(--ocre);}
+
+/* ══ GALERÍA GRID ITEMS ══ */
+.g-item{break-inside:avoid;margin-bottom:2px;position:relative;overflow:hidden;cursor:pointer;display:block;background:var(--negro-barro);}
+.g-item img{width:100%;display:block;transition:transform .8s cubic-bezier(.4,0,.2,1),filter .5s;filter:brightness(.9) saturate(.88);}
+.g-item:hover img{transform:scale(1.04);filter:brightness(1) saturate(1);}
+.g-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,5,4,.92) 0%,transparent 55%);opacity:0;transition:opacity .4s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.4rem;}
+.g-item:hover .g-overlay{opacity:1;}
+.g-serie{font-family:'IBM Plex Mono',monospace;font-size:.38rem;letter-spacing:.45em;color:var(--ocre);text-transform:uppercase;margin-bottom:.3rem;}
+.g-cap{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-style:italic;font-weight:300;color:var(--hueso);line-height:1.4;}
 </style>
 </head>
 <body>
@@ -1298,10 +1299,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 ══════════════════════════════════ */
 const FOTOS = [
   // ── MERCADO SAGRADO CORAZÓN ──
-  { src:'img/nelly-portada.jpg',   serie:'mercados',    caption:'Nelly Salazar - vendedora Mercado Sagrado Corazón, San Salvador' },
-{ src:'img/nelly-puesto.jpg',   serie:'mercados',    caption:'Puesto venta de gallinas — Mercado Sagrado Corazón, San Salvador' },
-   { src:'img/nelly-detalle.jpg',   serie:'mercados',    caption:'Venta de gallina roja — Mercado Sagrado Corazón, San Salvador' },
-   { src:'img/medicinas-ancestrales.jpg',   serie:'mercados',    caption:'Figuras esotéricas, ingredientes para rituales - Mercado Sagrado Corazón, San Salvador' },
+  { src:'img/sagrado-corazon-porton.jpg',   serie:'mercados',    caption:'Exterior, Portón 4 — Mercado Sagrado Corazón, San Salvador' },
   { src:'img/sagrado-corazon-pasillo.jpg',  serie:'mercados',    caption:'Pasillos interiores — Mercado Sagrado Corazón' },
   { src:'img/sagrado-corazon-altar.jpg',    serie:'mercados',    caption:'Altar del Sagrado Corazón en la nave del mercado, mayo 2026' },
   { src:'img/sagrado-corazon-flores.jpg',   serie:'mercados',    caption:'Vendedora de flores — Mercado Sagrado Corazón, mayo 2026' },
@@ -1314,8 +1312,6 @@ const FOTOS = [
   { src:'img/san-simon.jpg',                serie:'sagrado',     caption:'San Simón — "Abre las Puertas del Éxito", mayo 2026' },
   { src:'img/santos-letrero.jpg',           serie:'sagrado',     caption:'Santos católicos — Mercado Sagrado Corazón, mayo 2026' },
   { src:'img/especias.jpg',                 serie:'sagrado',     caption:'Especias en jícara de barro — conocimiento mesoamericano vivo' },
-   { src:'img/especias-detalle.jpg',   serie:'mercados',    caption:'Especias en jícara de barro — conocimiento mesoamericano vivo' },
-   { src:'img/se-leen-cartas.jpg',   serie:'mercados',    caption:'Esoterismo y sincretismo al interior del mercado' },
   // ── CENTRO HISTÓRICO ──
   { src:'img/fatima-arbol.jpg',             serie:'centro',      caption:'Árbol penetrando tienda religiosa — Centro histórico, San Salvador' },
   { src:'img/edificio-verde.jpg',           serie:'centro',      caption:'Arquitectura del centro histórico — San Salvador' },
